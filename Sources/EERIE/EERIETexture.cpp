@@ -310,7 +310,7 @@ TextureContainer * GetAnyTexture()
 	return g_ptcTextureList;
 }
 
-TextureContainer * FindTexture(TCHAR * strTextureName)
+TextureContainer * FindTexture(char * strTextureName)
 {
 	TextureContainer * ptcTexture = g_ptcTextureList;
 
@@ -886,7 +886,7 @@ HRESULT TextureContainer::LoadBitmapFile(TCHAR * strPathname)
 // Desc: Loads RGBA data from a .tga file, and stores it in allocated memory
 //       for the specified texture container
 //-----------------------------------------------------------------------------
-HRESULT TextureContainer::LoadTargaFile(TCHAR * strPathname)
+HRESULT TextureContainer::LoadTargaFile(char * strPathname)
 {
 	if (!PAK_FileExist(strPathname)) return E_FAIL;
 
@@ -3410,7 +3410,7 @@ TextureContainer * LastTextureContainer = NULL;
 #include "hermesmain.h"
 extern long DEBUGSYS;
 
-TextureContainer * D3DTextr_CreateTextureFromFile(TCHAR * strName, char * wd , DWORD dwStage,
+TextureContainer * D3DTextr_CreateTextureFromFile(char * strName, char * wd , DWORD dwStage,
         DWORD dwFlags, long sysflags)
 {
 	TextureContainer * ReturnValue = NULL;
@@ -3537,7 +3537,7 @@ TextureContainer * D3DTextr_CreateTextureFromFile(TCHAR * strName, char * wd , D
 // Name: D3DTextr_CreateEmptyTexture()
 // Desc: Creates an empty texture.
 //-----------------------------------------------------------------------------
-HRESULT D3DTextr_CreateEmptyTexture(TCHAR * strName, DWORD dwWidth,
+HRESULT D3DTextr_CreateEmptyTexture(char * strName, DWORD dwWidth,
                                     DWORD dwHeight, DWORD dwStage,
                                     DWORD dwFlags, char * wd , DWORD flags)
 {
@@ -3578,7 +3578,7 @@ HRESULT D3DTextr_CreateEmptyTexture(TCHAR * strName, DWORD dwWidth,
 // Desc: Invalidates the current texture objects and rebuilds new ones
 //       using the new device.
 //-----------------------------------------------------------------------------
-HRESULT D3DTextr_Restore(TCHAR * strName, LPDIRECT3DDEVICE7 pd3dDevice)
+HRESULT D3DTextr_Restore(char * strName, LPDIRECT3DDEVICE7 pd3dDevice)
 {
 	MakeUpcase(strName);
 	TextureContainer * ptcTexture = FindTexture(strName);
@@ -3699,7 +3699,7 @@ HRESULT D3DTextr_DestroyContainer(TextureContainer * ptcTexture)
 // Desc: Returns a pointer to a d3dSurface from the name of the texture
 //-----------------------------------------------------------------------------
 
-TextureContainer * D3DTextr_GetSurfaceContainer(TCHAR * strName)
+TextureContainer * D3DTextr_GetSurfaceContainer(char * strName)
 {
 	MakeUpcase(strName);
 	TextureContainer * ptcTexture = FindTexture(strName);

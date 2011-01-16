@@ -180,8 +180,8 @@ class TextureContainer
 		float	m_ody;						// precalculated 1.f/height
  
 		HRESULT LoadImageData();
-		HRESULT LoadBitmapFile(TCHAR * strPathname);
-		HRESULT LoadTargaFile(TCHAR * strPathname);
+		HRESULT LoadBitmapFile(char * strPathname);
+		HRESULT LoadTargaFile(char * strPathname);
  
 		HRESULT LoadJpegFileNoDecomp(TCHAR * strPathname);
 		HRESULT LoadPNGFile(TCHAR * strPathname);
@@ -219,7 +219,7 @@ class TextureContainer
 // ASCII name.
 //-----------------------------------------------------------------------------
  
-TextureContainer * D3DTextr_GetSurfaceContainer(TCHAR * strName);
+TextureContainer * D3DTextr_GetSurfaceContainer(char * strName);
 TextureContainer * GetTextureList();
 extern TextureContainer * LastTextureContainer;
 long CountTextures(char * tex, long * memsize, long * memmip);
@@ -228,7 +228,7 @@ long CountTextures(char * tex, long * memsize, long * memmip);
 // Texture invalidation and restoration functions
 //-----------------------------------------------------------------------------
  
-HRESULT D3DTextr_Restore(TCHAR * strName, LPDIRECT3DDEVICE7 pd3dDevice);
+HRESULT D3DTextr_Restore(char * strName, LPDIRECT3DDEVICE7 pd3dDevice);
 HRESULT D3DTextr_InvalidateAllTextures();
 HRESULT D3DTextr_RestoreAllTextures(LPDIRECT3DDEVICE7 pd3dDevice);
 HRESULT D3DTextr_TESTRestoreAllTextures(LPDIRECT3DDEVICE7 pd3dDevice);
@@ -250,9 +250,9 @@ void ReloadTexture(TextureContainer * tc);
 #define D3DTEXTR_NO_REFINEMENT	  (1<<7)
 #define D3DTEXTR_NO_INSERT		  0x80000000
 
-TextureContainer  * D3DTextr_CreateTextureFromFile(TCHAR * strName, char * wd = NULL , DWORD dwStage = 0L,
+TextureContainer  * D3DTextr_CreateTextureFromFile(char * strName, char * wd = NULL , DWORD dwStage = 0L,
         DWORD dwFlags = 0L , long sysflags = 0);
-HRESULT D3DTextr_CreateEmptyTexture(TCHAR * strName, DWORD dwWidth,
+HRESULT D3DTextr_CreateEmptyTexture(char * strName, DWORD dwWidth,
                                     DWORD dwHeight, DWORD dwStage,
                                     DWORD dwFlags , char * wd, DWORD flags = 0);
  
@@ -270,7 +270,7 @@ void D3DTextr_KillTexture(TextureContainer * tex);
 void D3DTextr_KillAllTextures();	
 void SpecialBorderSurface(TextureContainer * tc, unsigned long x0, unsigned long y0);
 
-TextureContainer * FindTexture(TCHAR * strTextureName);
+TextureContainer * FindTexture(char * strTextureName);
 TextureContainer * _FindTexture(char * strTextureName);
 
 bool TextureContainer_Exist(TextureContainer * tc);

@@ -285,7 +285,7 @@ void ARX_QuickSave()
 	char	tcDst[256];
 	sprintf( tcSrc, "%sSCT_0.BMP", Project.workingdir );
 	sprintf( tcDst, "%sSCT_1.BMP", Project.workingdir );
-	CopyFile( tcSrc, tcDst, FALSE );
+	CopyFileA( tcSrc, tcDst, FALSE );
 
 	if ( bFound0 == false )
 	{
@@ -294,8 +294,8 @@ void ARX_QuickSave()
 		ARXMenu_Options_Video_SetGamma( iOldGamma );
 		ARX_SOUND_MixerResume( ARX_SOUND_MixerGame );
 
-		CopyFile( tcDst, tcSrc, FALSE );
-		DeleteFile( tcDst );
+		CopyFileA( tcDst, tcSrc, FALSE );
+		DeleteFileA( tcDst );
 	}
 
 	if ( bFound1 == false )
@@ -306,8 +306,8 @@ void ARX_QuickSave()
 		ARX_SOUND_MixerResume( ARX_SOUND_MixerGame );
 	}
 
-	DeleteFile( tcSrc );
-	DeleteFile( tcDst );
+	DeleteFileA( tcSrc );
+	DeleteFileA( tcDst );
 }
 
 //-----------------------------------------------------------------------------
@@ -890,7 +890,7 @@ char * CMenuConfig::ReadConfig(char *_pcSection,char *_pcKey)
 {
 char tcText[256];
 
-	int iI=GetPrivateProfileString(_pcSection,_pcKey,"",tcText,256,pcName);
+	int iI=GetPrivateProfileStringA(_pcSection,_pcKey,"",tcText,256,pcName);
 
 	if(iI<=0) return NULL;
 
@@ -936,12 +936,12 @@ int iErreur=0;
 
 	char tcText[256];	
 
-	if(!GetPrivateProfileSection(_pcSection,tcText,256,pcName))
+	if(!GetPrivateProfileSectionA(_pcSection,tcText,256,pcName))
 	{
-		if(WritePrivateProfileSection(_pcSection,"",pcName)) iErreur++;
+		if(WritePrivateProfileSectionA(_pcSection,"",pcName)) iErreur++;
 	}
 
-	if(WritePrivateProfileString(_pcSection,_pcKey,_pcDatas,pcName)) iErreur++;
+	if(WritePrivateProfileStringA(_pcSection,_pcKey,_pcDatas,pcName)) iErreur++;
 
 	return (iErreur==2);
 }
@@ -2741,14 +2741,14 @@ int iDecMenuPrincipaleY=50;
 									char tex3[256];
 									char tex4[256];
 									strcpy(tex4,"  ");
-									GetDateFormat(	LOCALE_SYSTEM_DEFAULT,
+									GetDateFormatA(	LOCALE_SYSTEM_DEFAULT,
 										0,
 										&save_l[iI].stime,
 										"MMM dd yyyy",
 										tex3,
 										256);
 									strcat(tex4,tex3);
-									GetTimeFormat(	LOCALE_SYSTEM_DEFAULT,
+									GetTimeFormatA(	LOCALE_SYSTEM_DEFAULT,
 										0,
 										&save_l[iI].stime,
 										"   HH:mm",
@@ -2777,14 +2777,14 @@ int iDecMenuPrincipaleY=50;
 									char tex3[256];
 									char tex4[256];
 									strcpy(tex4,"  ");
-									GetDateFormat(	LOCALE_SYSTEM_DEFAULT,
+									GetDateFormatA(	LOCALE_SYSTEM_DEFAULT,
 										0,
 										&save_l[iI].stime,
 										"MMM dd yyyy",
 										tex3,
 										256);
 									strcat(tex4,tex3);
-									GetTimeFormat(	LOCALE_SYSTEM_DEFAULT,
+									GetTimeFormatA(	LOCALE_SYSTEM_DEFAULT,
 										0,
 										&save_l[iI].stime,
 										"   HH:mm",
@@ -2893,14 +2893,14 @@ int iDecMenuPrincipaleY=50;
 									char tex3[256];
 									char tex4[256];
 									strcpy(tex4,"  ");
-									GetDateFormat(	LOCALE_SYSTEM_DEFAULT,
+									GetDateFormatA(	LOCALE_SYSTEM_DEFAULT,
 										0,
 										&save_l[iI].stime,
 										"MMM dd yyyy",
 										tex3,
 										256);
 									strcat(tex4,tex3);
-									GetTimeFormat(	LOCALE_SYSTEM_DEFAULT,
+									GetTimeFormatA(	LOCALE_SYSTEM_DEFAULT,
 										0,
 										&save_l[iI].stime,
 										"   HH:mm",
@@ -2930,14 +2930,14 @@ int iDecMenuPrincipaleY=50;
 									char tex3[256];
 									char tex4[256];
 									strcpy(tex4,"  ");
-									GetDateFormat(	LOCALE_SYSTEM_DEFAULT,
+									GetDateFormatA(	LOCALE_SYSTEM_DEFAULT,
 										0,
 										&save_l[iI].stime,
 										"MMM dd yyyy",
 										tex3,
 										256);
 									strcat(tex4,tex3);
-									GetTimeFormat(	LOCALE_SYSTEM_DEFAULT,
+									GetTimeFormatA(	LOCALE_SYSTEM_DEFAULT,
 										0,
 										&save_l[iI].stime,
 										"   HH:mm",
@@ -3037,7 +3037,7 @@ int iDecMenuPrincipaleY=50;
 			//------------------ START OPTIONS
 			case OPTIONS_INPUT:
 				{
-					MessageBox(0, "", "", 0);
+					MessageBoxA(0, "", "", 0);
 
 				}
 				break;
@@ -8477,7 +8477,7 @@ _TCHAR * CDirectInput::GetFullNameTouch(int _iVirtualKey)
 	default:
 		{
 		char tAnsiText[256];
-		GetKeyNameText(lParam,tAnsiText,256);
+		GetKeyNameTextA(lParam,tAnsiText,256);
 		int i=strlen(tAnsiText);
 
 		if(!i)

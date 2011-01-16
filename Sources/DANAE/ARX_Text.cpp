@@ -109,7 +109,7 @@ void FontError()
 	    NULL
 	);
 
-	MessageBox(NULL, (LPCSTR)lpMsgBuf, (LPCSTR)"Font Error", MB_OK | MB_ICONINFORMATION);
+	MessageBoxA(NULL, (LPCSTR)lpMsgBuf, (LPCSTR)"Font Error", MB_OK | MB_ICONINFORMATION);
 #endif
 }
 //-----------------------------------------------------------------------------
@@ -573,11 +573,11 @@ _TCHAR * GetFontName(char * _lpszFileName)
 	DWORD dwRead;
 	int   iResult;
 
-	HANDLE hFile = CreateFile(_lpszFileName, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFile = CreateFileA(_lpszFileName, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (hFile == INVALID_HANDLE_VALUE)
 	{
-		MessageBox(NULL, "FontName :: File not Found", _lpszFileName, MB_OK);
+		MessageBoxA(NULL, "FontName :: File not Found", _lpszFileName, MB_OK);
 		return NULL;
 	}
 
@@ -590,7 +590,7 @@ _TCHAR * GetFontName(char * _lpszFileName)
 
 	if (iResult == 0)
 	{
-		MessageBox(NULL, "FontName :: Pas lu!", "", MB_OK);
+		MessageBoxA(NULL, "FontName :: Pas lu!", "", MB_OK);
 	}
 
 	// TABLE HEADERS
@@ -601,7 +601,7 @@ _TCHAR * GetFontName(char * _lpszFileName)
 
 		if (iResult == 0)
 		{
-			MessageBox(NULL, "FontName :: Pas lu!", "", MB_OK);
+			MessageBoxA(NULL, "FontName :: Pas lu!", "", MB_OK);
 		}
 
 		char szName[5];
@@ -623,7 +623,7 @@ _TCHAR * GetFontName(char * _lpszFileName)
 
 			if (iResult == 0)
 			{
-				MessageBox(NULL, "FontName :: Pas lu!", "", MB_OK);
+				MessageBoxA(NULL, "FontName :: Pas lu!", "", MB_OK);
 			}
 
 			FNH.usNbNameRecords = LilEndianShort(FNH.usNbNameRecords);
@@ -636,7 +636,7 @@ _TCHAR * GetFontName(char * _lpszFileName)
 
 				if (iResult == 0)
 				{
-					MessageBox(NULL, "FontName :: Pas lu!", "", MB_OK);
+					MessageBoxA(NULL, "FontName :: Pas lu!", "", MB_OK);
 				}
 
 				FNN.usNameID = LilEndianShort(FNN.usNameID);
@@ -663,7 +663,7 @@ _TCHAR * GetFontName(char * _lpszFileName)
 
 						if (iResult == 0)
 						{
-							MessageBox(NULL, "FontName :: Pas lu!", "", MB_OK);
+							MessageBoxA(NULL, "FontName :: Pas lu!", "", MB_OK);
 						}
 
 						for (int k = 0; k<(FNN.usStringLength >> 1); k++)
@@ -705,7 +705,7 @@ void _ShowText(char * text)
 				{
 					SetTextColor(hDC, RGB(0, 255, 0));
 					SetBkMode(hDC, TRANSPARENT);
-					ExtTextOut(hDC, 0, 0, 0, NULL, text, lstrlen(text), NULL);
+					ExtTextOutA(hDC, 0, 0, 0, NULL, text, lstrlenA(text), NULL);
 					danaeApp.m_pddsRenderTarget->ReleaseDC(hDC);
 				}
 			}

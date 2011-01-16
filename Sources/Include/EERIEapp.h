@@ -336,7 +336,7 @@ protected:
 		{
 			return S_OK;
 		}
-		VOID					OutputText( DWORD x, DWORD y, TCHAR * str );
+		VOID					OutputText( DWORD x, DWORD y, char * str );
  
 		HRESULT	SetClipping( float x1, float y1, float x2, float y2 );
  
@@ -355,7 +355,7 @@ protected:
 		void					EERIEMouseUpdate(short x, short y);
 
 		// Functions to create, run, pause, and clean up the application
-		virtual HRESULT			Create(HINSTANCE, TCHAR *);
+		virtual HRESULT			Create(HINSTANCE, char *);
 		virtual INT				Run();
 		virtual LRESULT			MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 		virtual VOID			Pause(BOOL bPause);

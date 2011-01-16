@@ -47,9 +47,9 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #define GAIA_NETWORK
 
 #include <windows.h>
-HRESULT WriteRegKey( HKEY hKey, TCHAR* strName, TCHAR* strValue );
-HRESULT WriteRegKeyValue( HKEY hKey, TCHAR* strName, DWORD val );
-HRESULT ReadRegKeyValue( HKEY hKey, TCHAR* strName, long * val, long defaultt );
-HRESULT ReadRegKey( HKEY hKey, TCHAR* strName, TCHAR* strValue, DWORD dwLength, TCHAR* strDefault );
+HRESULT WriteRegKey( HKEY hKey, char* strName, char* strValue );
+HRESULT WriteRegKeyValue( HKEY hKey, char* strName, DWORD val );
+HRESULT ReadRegKeyValue( HKEY hKey, char* strName, long * val, long defaultt );
+HRESULT ReadRegKey( HKEY hKey, char* strName, char* strValue, DWORD dwLength, char* strDefault );
 
 #endif

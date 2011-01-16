@@ -55,11 +55,11 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 // Name: WriteRegKey()
 // Desc: Writes a registry key 
 //-----------------------------------------------------------------------------
-HRESULT WriteRegKey( HKEY hKey, TCHAR* strName, TCHAR* strValue )
+HRESULT WriteRegKey( HKEY hKey, char* strName, char* strValue )
 {
 	LONG bResult;
 
-	bResult = RegSetValueEx( hKey, strName, 0, REG_SZ, 
+	bResult = RegSetValueExA( hKey, strName, 0, REG_SZ, 
 							 (LPBYTE) strValue, strlen(strValue) + 1 );
 	if ( bResult != ERROR_SUCCESS )
 		return E_FAIL;
@@ -67,11 +67,11 @@ HRESULT WriteRegKey( HKEY hKey, TCHAR* strName, TCHAR* strValue )
     return S_OK;
 }
 
-HRESULT WriteRegKeyValue( HKEY hKey, TCHAR* strName, DWORD val )
+HRESULT WriteRegKeyValue( HKEY hKey, char* strName, DWORD val )
 {
 	LONG bResult;
 
-	bResult = RegSetValueEx( hKey, strName, 0, REG_DWORD, 
+	bResult = RegSetValueExA( hKey, strName, 0, REG_DWORD, 
 							 (LPBYTE) &val, 4 );
 	if ( bResult != ERROR_SUCCESS )
 		return E_FAIL;
@@ -83,26 +83,26 @@ HRESULT WriteRegKeyValue( HKEY hKey, TCHAR* strName, DWORD val )
 // Name: ReadRegKey()
 // Desc: Read a registry key 
 //-----------------------------------------------------------------------------
-HRESULT ReadRegKey( HKEY hKey, TCHAR* strName, TCHAR* strValue, 
-                    DWORD dwLength, TCHAR* strDefault )
+HRESULT ReadRegKey( HKEY hKey, char* strName, char* strValue, 
+                    DWORD dwLength, char* strDefault )
 {
 	DWORD dwType;
 	LONG bResult;
 
-	bResult = RegQueryValueEx( hKey, strName, 0, &dwType, 
+	bResult = RegQueryValueExA( hKey, strName, 0, &dwType, 
 							 (LPBYTE) strValue, &dwLength );
 	if ( bResult != ERROR_SUCCESS )
 		strcpy( strValue, strDefault );
 
     return S_OK;
 }
-HRESULT ReadRegKeyValue( HKEY hKey, TCHAR* strName, long * val, long defaultt )
+HRESULT ReadRegKeyValue( HKEY hKey, char* strName, long * val, long defaultt )
 {
 	DWORD dwType;
 	unsigned long dwLength=4;
 	LONG bResult;
 
-	bResult = RegQueryValueEx( hKey, strName, 0, &dwType, 
+	bResult = RegQueryValueExA( hKey, strName, 0, &dwType, 
 							 (LPBYTE) val, &dwLength );
     return S_OK;
 }

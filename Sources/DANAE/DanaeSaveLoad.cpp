@@ -388,7 +388,7 @@ long DanaeSaveLevel(char * fic)
 
 	_time32(&dlh.time);
 
-	GetUserName(dlh.lastuser, &siz);
+	GetUserNameA(dlh.lastuser, &siz);
 	memcpy(dat, &dlh, sizeof(DANAE_LS_HEADER));
 	pos += sizeof(DANAE_LS_HEADER);
 
@@ -607,7 +607,7 @@ long DanaeSaveLevel(char * fic)
 
 	_time32(&llh.time);
 
-	GetUserName(llh.lastuser, &siz);
+	GetUserNameA(llh.lastuser, &siz);
 
 	memcpy(dat, &llh, sizeof(DANAE_LLF_HEADER));
 	pos += sizeof(DANAE_LLF_HEADER);
@@ -746,7 +746,7 @@ void WriteIOInfo(INTERACTIVE_OBJ * io, char * dir)
 			unsigned long num = 255;
 			fprintf(fic, "Object   : %s%04d\n", temp, io->ident);
 			fprintf(fic, "_______________________________\n\n");
-			GetUserName(name, &num);
+			GetUserNameA(name, &num);
 			fprintf(fic, "Creator  : %s\n", name);
 			GetDate(&hdt);
 			fprintf(fic, "Date     : %02d/%02d/%d\n", hdt.days, hdt.months, hdt.years);
@@ -782,7 +782,7 @@ void LogDirCreation(char * dir)
 		{
 			char name[256];
 			unsigned long num = 255;
-			GetUserName(name, &num);
+			GetUserNameA(name, &num);
 			GetDate(&hdt);
 			fprintf(fic, "%02d/%02d/%4d %2dh%02d %s  %s\n", hdt.days, hdt.months, hdt.years, hdt.hours, hdt.mins, dir, name);
 			fclose(fic);
@@ -807,7 +807,7 @@ void LogDirDestruction(char * dir)
 		{
 			char name[256];
 			unsigned long num = 255;
-			GetUserName(name, &num);
+			GetUserNameA(name, &num);
 			GetDate(&hdt);
 			fprintf(fic, "%02d/%02d/%4d %2dh%02d DESTROYED %s  %s\n", hdt.days, hdt.months, hdt.years, hdt.hours, hdt.mins, dir, name);
 			fclose(fic);
@@ -999,7 +999,7 @@ suite:
 			}
 			else
 			{
-				CreateDirectory(tmp, NULL);
+				CreateDirectoryA(tmp, NULL);
 				LogDirCreation(tmp);
 				WriteIOInfo(io, temp);
 			}

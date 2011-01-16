@@ -574,7 +574,7 @@ bool GetARXInstallPath(char * dest)
 {
 	char text[256];
 
-	GetCurrentDirectory( 256, text );
+	GetCurrentDirectoryA( 256, text );
 
 	if (text[0]==0) return false;
 
@@ -1110,7 +1110,7 @@ int HandlerMemory(size_t stSize)
 		ShowWindow(danaeApp.m_hWnd,SW_MINIMIZE|SW_HIDE);
 	}
 
-	MessageBox(NULL,"Fatal memory error!!!","Arx fatalis",MB_ICONERROR);
+	MessageBoxA(NULL,"Fatal memory error!!!","Arx fatalis",MB_ICONERROR);
 	exit(-1);
 }
 
@@ -1443,7 +1443,7 @@ INT WINAPI WinMain( HINSTANCE _hInstance, HINSTANCE, LPSTR strCmdLine, INT )
 		{
 			if (!GetARXInstallPath(Project.workingdir))
 			{
-				MessageBox(NULL,"Unable to Find Game Info\nPlease Reinstall ARX Fatalis","Error",MB_ICONEXCLAMATION | MB_OK);
+				MessageBoxA(NULL,"Unable to Find Game Info\nPlease Reinstall ARX Fatalis","Error",MB_ICONEXCLAMATION | MB_OK);
 				exit(0);
 			}
 
@@ -1491,7 +1491,7 @@ INT WINAPI WinMain( HINSTANCE _hInstance, HINSTANCE, LPSTR strCmdLine, INT )
 		else
 		{
 			Dbg_str("Exit");
-			MessageBox(NULL, "Unable to Find Data File\nPlease Reinstall ARX Fatalis", "Arx Fatalis - Error", MB_ICONEXCLAMATION | MB_OK);
+			MessageBoxA(NULL, "Unable to Find Data File\nPlease Reinstall ARX Fatalis", "Arx Fatalis - Error", MB_ICONEXCLAMATION | MB_OK);
 			exit(0); 
 		}
 
@@ -1512,7 +1512,7 @@ INT WINAPI WinMain( HINSTANCE _hInstance, HINSTANCE, LPSTR strCmdLine, INT )
 			}
 			else
 			{
-				MessageBox(NULL, "Unable to Find Data File\nPlease Reinstall ARX Fatalis", "Arx Fatalis - Error", MB_ICONEXCLAMATION | MB_OK);
+				MessageBoxA(NULL, "Unable to Find Data File\nPlease Reinstall ARX Fatalis", "Arx Fatalis - Error", MB_ICONEXCLAMATION | MB_OK);
 				exit(0);
 			}
 		}
@@ -1525,7 +1525,7 @@ INT WINAPI WinMain( HINSTANCE _hInstance, HINSTANCE, LPSTR strCmdLine, INT )
 			PAK_SetLoadMode(LOAD_PACK, pakfile,Project.workingdir);
 		else
 		{
-			MessageBox(NULL, "Unable to Find Data File\nPlease Reinstall ARX Fatalis", "Arx Fatalis - Error", MB_ICONEXCLAMATION | MB_OK);
+			MessageBoxA(NULL, "Unable to Find Data File\nPlease Reinstall ARX Fatalis", "Arx Fatalis - Error", MB_ICONEXCLAMATION | MB_OK);
 			exit(0);
 		}
 	}
@@ -1606,7 +1606,7 @@ INT WINAPI WinMain( HINSTANCE _hInstance, HINSTANCE, LPSTR strCmdLine, INT )
 	{
 		char stemp[256];
 		unsigned long ls = 64;
-		GetComputerName(stemp, &ls);
+		GetComputerNameA(stemp, &ls);
 
 		if (!stricmp(stemp,"max"))
 		{
@@ -1659,9 +1659,9 @@ INT WINAPI WinMain( HINSTANCE _hInstance, HINSTANCE, LPSTR strCmdLine, INT )
 	if (	(!FINAL_COMMERCIAL_DEMO)
 		&&	(!FINAL_COMMERCIAL_GAME)	)
 	{
-		if (LoadLibrary(("RICHED32.DLL")) == NULL)
+		if (LoadLibraryA(("RICHED32.DLL")) == NULL)
 		{
-			MessageBox(NULL, "DanaeScriptEditor :: IDS_RICHED_LOAD_FAIL", "", MB_OK|MB_ICONEXCLAMATION);
+			MessageBoxA(NULL, "DanaeScriptEditor :: IDS_RICHED_LOAD_FAIL", "", MB_OK|MB_ICONEXCLAMATION);
 		}
 	}
 	
@@ -1712,7 +1712,7 @@ INT WINAPI WinMain( HINSTANCE _hInstance, HINSTANCE, LPSTR strCmdLine, INT )
 		Dbg_str("KillDir");
 		ARX_CHANGELEVEL_MakePath();
 		KillAllDirectory(CurGamePath);
-		CreateDirectory(CurGamePath,NULL);
+		CreateDirectoryA(CurGamePath,NULL);
 	}	
 
 	Project.improve=0;
@@ -1769,7 +1769,7 @@ INT WINAPI WinMain( HINSTANCE _hInstance, HINSTANCE, LPSTR strCmdLine, INT )
 	{
 		char texx[64];
 		strcpy(texx,"GaiaMessages");
-		GaiaWM=RegisterWindowMessage(texx); 
+		GaiaWM=RegisterWindowMessageA(texx); 
 	}
 
 	Dbg_str("Sound Init");
@@ -8141,7 +8141,7 @@ LRESULT DANAE::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam,
 				char temp[512];
 				char texx[512];
 				hDrop = (HANDLE) wParam;
-				number=DragQueryFile((HDROP)hDrop,0,temp,512); 
+				number=DragQueryFileA((HDROP)hDrop,0,temp,512); 
 
 				if (number > 0)
 				{

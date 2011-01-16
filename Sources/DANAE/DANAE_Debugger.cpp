@@ -51,7 +51,7 @@ DD_GETVERSION DD_GetVersion = NULL;
 
 void DANAE_DEBUGGER_Launch(HWND hWnd)
 {
-	HMODULE hm = LoadLibrary("ARX_SCRIPT_DEBUGGER");
+	HMODULE hm = LoadLibraryA("ARX_SCRIPT_DEBUGGER");
 
 	if (!(DD_GetVersion =	(DD_GETVERSION) GetProcAddress(hm, "SCRIPT_DEBUGGER_GetVersion"))) goto invalid;
 

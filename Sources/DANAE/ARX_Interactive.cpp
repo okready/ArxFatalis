@@ -3280,7 +3280,7 @@ void MakeIOIdent(INTERACTIVE_OBJ * io)
 		if (!DirectoryExist(temp))
 		{
 			io->ident = t;
-			CreateDirectory(temp, NULL);
+			CreateDirectoryA(temp, NULL);
 			LogDirCreation(temp);
 			WriteIOInfo(io, temp);
 		}

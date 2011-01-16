@@ -35,7 +35,7 @@ class ViewImage
 {
 	public:
 		vector<char *>		vListImage;
-		WIN32_FIND_DATA		w32fdata;
+		WIN32_FIND_DATAA	w32fdata;
 		TextureContainer	* pTexCurr;
 
 	public:

@@ -268,9 +268,9 @@ SnapShot::SnapShot(char * _pDir, char * _pName, bool _bReplace)
 
 		if (!_bReplace)
 		{
-			char tTemp[sizeof(WIN32_FIND_DATA)+2];
-			WIN32_FIND_DATA * w32fdata = (WIN32_FIND_DATA *)tTemp;
-			HANDLE h = FindFirstFile((const char *)tTxt, w32fdata);
+			char tTemp[sizeof(WIN32_FIND_DATAA)+2];
+			WIN32_FIND_DATAA * w32fdata = (WIN32_FIND_DATAA *)tTemp;
+			HANDLE h = FindFirstFileA((const char *)tTxt, w32fdata);
 
 			if (h == INVALID_HANDLE_VALUE) return;
 
@@ -284,7 +284,7 @@ SnapShot::SnapShot(char * _pDir, char * _pName, bool _bReplace)
 					if (strstr(tTxt, pName)) ulNum++;
 				}
 			}
-			while (FindNextFile(h, w32fdata));
+			while (FindNextFileA(h, w32fdata));
 
 			FindClose(h);
 		}

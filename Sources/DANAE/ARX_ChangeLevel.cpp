@@ -203,14 +203,14 @@ void ARX_GAMESAVE_MakePath()
 
 	if (!DirectoryExist(GameSavePath))
 	{
-		CreateDirectory(GameSavePath, NULL);
+		CreateDirectoryA(GameSavePath, NULL);
 	}
 
 	sprintf(GameSavePath, "%sSave%s\\Save%04d\\", Project.workingdir, LOCAL_SAVENAME, CURRENT_GAME_INSTANCE);
 
 	if (!DirectoryExist(GameSavePath))
 	{
-		CreateDirectory(GameSavePath, NULL);
+		CreateDirectoryA(GameSavePath, NULL);
 	}
 }
 
@@ -227,7 +227,7 @@ void ARX_GAMESAVE_CreateNewInstance()
 
 		if (!DirectoryExist(testpath))
 		{
-			CreateDirectory(testpath, NULL);
+			CreateDirectoryA(testpath, NULL);
 			CURRENT_GAME_INSTANCE = num;
 			ARX_GAMESAVE_MakePath();
 			return;
@@ -317,13 +317,13 @@ void ARX_CHANGELEVEL_MakePath()
 
 	if (!DirectoryExist(CurGamePath))
 	{
-		CreateDirectory(CurGamePath, NULL);
+		CreateDirectoryA(CurGamePath, NULL);
 	}
 
 	sprintf(CurGamePath, "%sSave%s\\Cur%04d\\", Project.workingdir, LOCAL_SAVENAME, LAST_CHINSTANCE);
 
 	if (!DirectoryExist(CurGamePath))
-		CreateDirectory(CurGamePath, NULL);
+		CreateDirectoryA(CurGamePath, NULL);
 }
 //--------------------------------------------------------------------------------------------
 void ARX_CHANGELEVEL_CreateNewInstance()
@@ -339,7 +339,7 @@ void ARX_CHANGELEVEL_CreateNewInstance()
 
 		if (!DirectoryExist(testpath))
 		{
-			CreateDirectory(testpath, NULL);
+			CreateDirectoryA(testpath, NULL);
 			LAST_CHINSTANCE = num;
 			ARX_CHANGELEVEL_MakePath();
 			return;
@@ -2430,7 +2430,7 @@ long ARX_CHANGELEVEL_Pop_IO(char * ident)
 	{
 		char tcText[256];
 		sprintf(tcText, "%s", ident, 0);
-		MessageBox(NULL, tcText, "Error while loading...", 0);
+		MessageBoxA(NULL, tcText, "Error while loading...", 0);
 		return -1;
 	}
 
@@ -3999,9 +3999,9 @@ long ARX_CHANGELEVEL_PopLevel(long instance, long reloadflag)
 // écrase les fichiers pour les mettre à jour
 void CopyDirectory(char * _lpszSrc, char * _lpszDest)
 {
-	CreateDirectory(_lpszDest, NULL);
+	CreateDirectoryA(_lpszDest, NULL);
 
-	//	WIN32_FIND_DATA FindFileData;
+	//	WIN32_FIND_DATAA FindFileData;
 	HANDLE hFind;
 
 	printf("Target file is %s.\n", _lpszSrc);
@@ -4011,10 +4011,10 @@ void CopyDirectory(char * _lpszSrc, char * _lpszDest)
 	strcpy(path, _lpszSrc);
 	strcat(path, "*.*");
 
-	char tTemp[sizeof(WIN32_FIND_DATA)+2];
-	WIN32_FIND_DATA * FindFileData = (WIN32_FIND_DATA *)tTemp;
+	char tTemp[sizeof(WIN32_FIND_DATAA)+2];
+	WIN32_FIND_DATAA * FindFileData = (WIN32_FIND_DATAA *)tTemp;
 
-	hFind = FindFirstFile(path, FindFileData);
+	hFind = FindFirstFileA(path, FindFileData);
 
 	do
 	{
@@ -4048,11 +4048,11 @@ void CopyDirectory(char * _lpszSrc, char * _lpszDest)
 				strcpy(d, _lpszDest);
 				strcat(s, FindFileData->cFileName);
 				strcat(d, FindFileData->cFileName);
-				CopyFile(s, d, false);
+				CopyFileA(s, d, false);
 			}
 		}
 	}
-	while (FindNextFile(hFind, FindFileData) > 0);
+	while (FindNextFileA(hFind, FindFileData) > 0);
 
 	if (hFind)
 		FindClose(hFind);
@@ -4091,7 +4091,7 @@ long ARX_CHANGELEVEL_Save(long instance, char * name)
 	// fill GameSavePath with our savepath.
 	ARX_GAMESAVE_MakePath();
 	// Erase All directory content if overwriting a game
-	CreateDirectory(GameSavePath, NULL);
+	CreateDirectoryA(GameSavePath, NULL);
 
 	if (SecondaryInventory != NULL)
 	{
@@ -4116,8 +4116,8 @@ long ARX_CHANGELEVEL_Save(long instance, char * name)
 	char tcDst[256];
 	sprintf(tcSrc, "%sSCT_0.BMP", Project.workingdir);
 	sprintf(tcDst, "%sGSAVE.BMP", GameSavePath);
-	CopyFile(tcSrc, tcDst, FALSE);
-	DeleteFile(tcSrc);
+	CopyFileA(tcSrc, tcDst, FALSE);
+	DeleteFileA(tcSrc);
 
 	ARX_CHANGELEVEL_PLAYER_LEVEL_DATA pld;
 	memset(&pld, 0, sizeof(ARX_CHANGELEVEL_PLAYER_LEVEL_DATA));
@@ -4312,7 +4312,7 @@ long ARX_CHANGELEVEL_Load(long instance)
 	// Empty Directory
 	ARX_CHANGELEVEL_MakePath();
 	KillAllDirectory(CurGamePath);
-	CreateDirectory(CurGamePath, NULL);
+	CreateDirectoryA(CurGamePath, NULL);
 
 	// Copy SavePath to Current Game
 	CopyDirectory(GameSavePath, CurGamePath);

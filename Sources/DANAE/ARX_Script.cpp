@@ -13584,10 +13584,10 @@ LRESULT CALLBACK ShowTextDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
 			break;
 		case WM_INITDIALOG:
 			SendMessage(hDlg, WM_SIZE, 0, 0);
-			SetWindowText(hDlg, ShowTextWindowtext);
+			SetWindowTextA(hDlg, ShowTextWindowtext);
 			thWnd = GetDlgItem(hDlg, IDC_SHOWTEXT);
 			SendMessage(thWnd, WM_SETFONT, (WPARAM) GetStockObject(ANSI_FIXED_FONT), TRUE);
-			SetWindowText(thWnd, ShowText);
+			SetWindowTextA(thWnd, ShowText);
 
 			return TRUE;
 		case WM_SIZE:
@@ -13617,11 +13617,11 @@ LRESULT CALLBACK ShowVarsDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
 			break;
 		case WM_INITDIALOG:
 			SendMessage(hDlg, WM_SIZE, 0, 0);
-			SetWindowText(hDlg, ShowTextWindowtext);
+			SetWindowTextA(hDlg, ShowTextWindowtext);
 			thWnd = GetDlgItem(hDlg, IDC_SHOWTEXT);
-			SetWindowText(thWnd, ShowText);
+			SetWindowTextA(thWnd, ShowText);
 			thWnd = GetDlgItem(hDlg, IDC_SHOWTEXT2);
-			SetWindowText(thWnd, ShowText2);
+			SetWindowTextA(thWnd, ShowText2);
 			return TRUE;
 		case WM_COMMAND:
 

@@ -2775,7 +2775,7 @@ SMY_D3DVERTEX *pMyVertex;
 		{
 			char tTxt[256];
 			sprintf(tTxt,"portals %d - Zero Polys",room_num);
-			MessageBox(	NULL,
+			MessageBoxA(	NULL,
 						tTxt,
 						"Error Portals",
 						MB_OK|MB_ICONERROR );

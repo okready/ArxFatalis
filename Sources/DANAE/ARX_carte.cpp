@@ -364,7 +364,7 @@ float oldposx,oldposz;
 		(ddsd.ddpfPixelFormat.dwRGBBitCount==8)||
 		(ddsd.ddpfPixelFormat.dwRGBBitCount==24) )
 	{
-		MessageBox(NULL,"Desktop not in 16 or 32 bits","Map Generation Error!!!",0);
+		MessageBoxA(NULL,"Desktop not in 16 or 32 bits","Map Generation Error!!!",0);
 		SAFE_RELEASE(this->surfacetemp);
 		return FALSE;
 	}

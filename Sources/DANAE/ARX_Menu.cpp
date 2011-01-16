@@ -167,10 +167,10 @@ void CreateSaveGameList()
 	memset(&save_l[0].stime, 0, sizeof(SYSTEMTIME));
 	save_c = 1;
 
-	char tTemp[sizeof(WIN32_FIND_DATA)+2];
-	WIN32_FIND_DATA * fdata = (WIN32_FIND_DATA *)tTemp;
+	char tTemp[sizeof(WIN32_FIND_DATAA)+2];
+	WIN32_FIND_DATAA * fdata = (WIN32_FIND_DATAA *)tTemp;
 
-	if ((h = FindFirstFile(path, fdata)) != INVALID_HANDLE_VALUE)
+	if ((h = FindFirstFileA(path, fdata)) != INVALID_HANDLE_VALUE)
 	{
 		do
 		{
@@ -203,7 +203,7 @@ void CreateSaveGameList()
 				}
 			}
 		}
-		while (FindNextFile(h, fdata));
+		while (FindNextFileA(h, fdata));
 
 		FindClose(h);
 	}
@@ -454,7 +454,7 @@ void ARX_MENU_Clicked_QUIT_GAME()
 
 			if (ARX_IsSteam())
 			{
-				ShellExecute(NULL, "open", "steam://store/1700", NULL, NULL, SW_SHOWNORMAL);
+				ShellExecuteA(NULL, "open", "steam://store/1700", NULL, NULL, SW_SHOWNORMAL);
 			}
 		}
 

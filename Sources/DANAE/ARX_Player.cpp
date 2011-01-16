@@ -3795,7 +3795,7 @@ void ARX_PLAYER_Start_New_Quest()
 	//Empty Current Game Directory to restart a new game...
 	ARX_CHANGELEVEL_MakePath();
 	KillAllDirectory(CurGamePath);
-	CreateDirectory(CurGamePath, NULL);
+	CreateDirectoryA(CurGamePath, NULL);
 	inter.iobj[0]->halo.flags = 0;
 	
 }

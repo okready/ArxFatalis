@@ -439,7 +439,7 @@ long ARX_SOUND_Init(HWND hwnd)
 		if (FileExist(pakfile)) aalAddResourcePack(pakfile);
 		else
 		{
-			MessageBox(NULL, "Unable to Find Data File\nPlease Reinstall ARX Fatalis", "Arx Fatalis - Error", MB_ICONEXCLAMATION | MB_OK);
+			MessageBoxA(NULL, "Unable to Find Data File\nPlease Reinstall ARX Fatalis", "Arx Fatalis - Error", MB_ICONEXCLAMATION | MB_OK);
 			exit(0);
 		}
 
@@ -459,7 +459,7 @@ long ARX_SOUND_Init(HWND hwnd)
 			}
 			else
 			{
-				MessageBox(NULL, "Unable to Find Data File\nPlease Reinstall ARX Fatalis", "Arx Fatalis - Error", MB_ICONEXCLAMATION | MB_OK);
+				MessageBoxA(NULL, "Unable to Find Data File\nPlease Reinstall ARX Fatalis", "Arx Fatalis - Error", MB_ICONEXCLAMATION | MB_OK);
 				exit(0);
 			}
 		}
@@ -2247,7 +2247,7 @@ static void ARX_SOUND_KillUpdateThread()
 	bExitUpdateThread = true;
 
 	if (WaitForSingleObject(hUpdateThread, 5000) == WAIT_TIMEOUT)
-		MessageBox(NULL, "Failed while killing audio thread", "ARX Fatalis - Error", MB_OK);
+		MessageBoxA(NULL, "Failed while killing audio thread", "ARX Fatalis - Error", MB_OK);
 
 	CloseHandle(hUpdateThread), hUpdateThread = NULL;
 }
