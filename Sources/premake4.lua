@@ -2,8 +2,17 @@ solution "ArxFatalis"
 	configurations { "Debug", "Release" }
 	location "build"
 
-	defines { "_UNICODE" }
-	flags { "NoExceptions", "NoRTTI", "Unicode" }
+	includedirs
+	{
+		"Include/OtherLibs",
+		"Include",
+	}
+
+	libdirs
+	{
+		"lib/otherlibs",
+		"lib",
+	}
 
 	configuration "Debug"
 		defines { "_DEBUG" }
@@ -15,16 +24,21 @@ solution "ArxFatalis"
 
 	configuration { "windows" }
 		defines { "WIN32", "_WINDOWS", "_CRT_SECURE_NO_WARNINGS" }
+		includedirs
+		{
+			"DX/include",
+		}
+		libdirs
+		{
+			"DX/lib",
+		}
 
 	project "ArxCommon"
 		kind "StaticLib"
 		language "C++"
-		defines { "_LIB" }
-		includedirs
-		{
-			"Include/OtherLibs",
-			"Include",
-		}
+		flags { "Unicode" }
+		defines { "_LIB", "_UNICODE" }
+		targetdir "lib"
 		files
 		{
 			"ArxCommon/*.cpp",
@@ -33,16 +47,17 @@ solution "ArxFatalis"
 	project "Athena"
 		kind "SharedLib"
 		language "C++"
-		defines { "_USRDLL", "ATHENA_EXPORTS", "AAL_APIDLL" }
-		includedirs
-		{
-			"Include/OtherLibs",
-			"Include",
-		}
+		defines { "_USRDLL", "_MBCS", "ATHENA_EXPORTS", "AAL_APIDLL" }
+		targetdir "../game"
 		files
 		{
 			"Athena/*.cpp",
 			"Athena/*.h",
+		}
+		excludes
+		{
+			"Athena/Athena_Stream_ASF.cpp",
+			"Athena/Athena_Track.cpp",
 		}
 		links
 		{
@@ -51,15 +66,14 @@ solution "ArxFatalis"
 			"ARX_SCRIPT_DEBUGGER",
 		}
 
+		configuration "windows"
+			linkoptions { "/NODEFAULTLIB:LIBC" }
+
 	project "EErie"
 		kind "StaticLib"
 		language "C++"
-		defines { "_LIB" }
-		includedirs
-		{
-			"Include/OtherLibs",
-			"Include",
-		}
+		defines { "_LIB", "_MBCS" }
+		targetdir "lib"
 		files
 		{
 			"EERIE/*.cpp",
@@ -68,12 +82,8 @@ solution "ArxFatalis"
 	project "HERMES"
 		kind "StaticLib"
 		language "C++"
-		defines { "_LIB" }
-		includedirs
-		{
-			"Include/OtherLibs",
-			"Include",
-		}
+		defines { "_LIB", "_MBCS" }
+		targetdir "lib"
 		files
 		{
 			"HERMES/*.cpp",
@@ -83,12 +93,8 @@ solution "ArxFatalis"
 	project "Mercury"
 		kind "StaticLib"
 		language "C++"
-		defines { "_LIB" }
-		includedirs
-		{
-			"Include/OtherLibs",
-			"Include",
-		}
+		defines { "_LIB", "_MBCS" }
+		targetdir "lib"
 		files
 		{
 			"Mercury/*.cpp",
@@ -97,12 +103,8 @@ solution "ArxFatalis"
 	project "MINOS"
 		kind "StaticLib"
 		language "C++"
-		defines { "_LIB" }
-		includedirs
-		{
-			"Include/OtherLibs",
-			"Include",
-		}
+		defines { "_LIB", "_MBCS" }
+		targetdir "lib"
 		files
 		{
 			"MINOS/*.cpp",
@@ -111,11 +113,10 @@ solution "ArxFatalis"
 	project "DANAE"
 		kind "WindowedApp"
 		language "C++"
-		includedirs
-		{
-			"Include/OtherLibs",
-			"Include",
-		}
+		flags { "Unicode" }
+		defines { "_UNICODE" }
+		targetdir "../game"
+		targetname "arx"
 		files
 		{
 			"DANAE/*.cpp",
@@ -130,18 +131,13 @@ solution "ArxFatalis"
 			"HERMES",
 			"Mercury",
 			"MINOS",
-			"ARX_SCRIPT_DEBUGGER",
+			--"ARX_SCRIPT_DEBUGGER",
 		}
 
 	project "ARX_SCRIPT_DEBUGGER"
 		kind "SharedLib"
 		language "C++"
-		defines { "_USRDLL", "ARX_SCRIPT_DEBUGGER_EXPORTS", "APIDLL" }
-		includedirs
-		{
-			"Include/OtherLibs",
-			"Include",
-		}
+		defines { "_USRDLL", "_MBCS", "ARX_SCRIPT_DEBUGGER_EXPORTS", "APIDLL" }
 		files
 		{
 			"DANAE_Debugger/resource.h",
@@ -150,3 +146,15 @@ solution "ArxFatalis"
 			"DANAE_Debugger/SCRIPT_DEBUGGER_Dialog.cpp",
 			"DANAE_Debugger/SCRIPT_DEBUGGER_Dialog.h",
 		}
+
+		configuration "Debug"
+			targetdir "DANAE/Debug"
+
+		configuration "Release"
+			targetdir "DANAE/Release"
+
+		configuration "windows"
+			links
+			{
+				"comctl32",
+			}

@@ -1,2 +1,8 @@
 Sources/build/
+Sources/DX/
+Sources/DANAE/Debug/
+Sources/DANAE/Release/
+Sources/lib/*.lib
+Sources/lib/*.idb
+game/
 *~
