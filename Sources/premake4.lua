@@ -15,14 +15,15 @@ solution "ArxFatalis"
 	}
 
 	configuration "Debug"
-		defines { "_DEBUG" }
 		flags { "Symbols" }
+		defines { "_DEBUG" }
 
 	configuration "Release"
-		defines { "NDEBUG" }
 		flags { "OptimizeSpeed" }
+		defines { "NDEBUG" }
 
 	configuration { "windows" }
+		flags { "StaticRuntime", "WinMain" }
 		defines { "WIN32", "_WINDOWS", "_CRT_SECURE_NO_WARNINGS" }
 		includedirs
 		{
@@ -121,7 +122,7 @@ solution "ArxFatalis"
 		{
 			"DANAE/*.cpp",
 			"DANAE/*.h",
-			"DANAE/*.rc",
+			"DANAE/DANAE.rc",
 		}
 		links
 		{
@@ -132,7 +133,31 @@ solution "ArxFatalis"
 			"Mercury",
 			"MINOS",
 			--"ARX_SCRIPT_DEBUGGER",
+			"implode",
 		}
+
+		configuration "windows"
+			links
+			{
+				"zlib",
+				"jpeglib",
+				"dinput",
+				"wsock32",
+				"dxguid",
+				"dsound",
+				"winmm",
+				"comctl32",
+				"ddraw",
+				"advapi32",
+			}
+			linkoptions { "/NODEFAULTLIB:LIBC" }
+
+		configuration "not windows"
+			links
+			{
+				"z",
+				"jpeg",
+			}
 
 	project "ARX_SCRIPT_DEBUGGER"
 		kind "SharedLib"
