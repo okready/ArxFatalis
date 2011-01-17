@@ -23,7 +23,7 @@ solution "ArxFatalis"
 		defines { "NDEBUG" }
 
 	configuration { "windows" }
-		flags { "StaticRuntime", "WinMain" }
+		flags { "WinMain" }
 		defines { "WIN32", "_WINDOWS", "_CRT_SECURE_NO_WARNINGS" }
 		includedirs
 		{
@@ -152,7 +152,7 @@ solution "ArxFatalis"
 			links
 			{
 				"zlib",
-				"jpeglib",
+				"libjpeg",
 				"dinput",
 				"wsock32",
 				"dxguid",

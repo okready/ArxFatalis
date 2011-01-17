@@ -53,17 +53,14 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 //
 // Code:	Cyril Meynier
 //			Sébastien Scieux	(JPEG & PNG)
+//			Ted Cipicchio		(libjpeg update & jpeg_mem_src()/jpeg_mem_reinitsrc()
+//			             		reimplementations)
 //
 // Copyright (c) 1999 ARKANE Studios SA. All rights reserved
 //////////////////////////////////////////////////////////////////////////////////////
 #define STRICT
 #include <tchar.h>
 #include <stdio.h>
-
-#include <jpeglib.h>
-#include <jerror.h>
-#include <jconfig.h>
-#include <jmorecfg.h>
 
 #include <zlib.h>
 
@@ -74,6 +71,11 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #include "EERIEMath.h"
 
 #include "HERMESMain.h"
+
+#include <jpeglib.h>
+#include <jerror.h>
+#include <jconfig.h>
+#include <jmorecfg.h>
 
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
@@ -196,6 +198,65 @@ TextureContainer * MakeTCFromFile_NoRefinement(char * tex, long flag)
 
 	GLOBAL_EERIETEXTUREFLAG_LOADSCENE_RELEASE = old;
 	return tc;
+}
+
+//-----------------------------------------------------------------------------
+// Name: JpegMemSrc()
+// Desc: Custom version of jpeg_mem_src() that caches the original JPEG data
+//       buffer and size so that decompression can be quickly reset using
+//       JpegMemReinitSrc().  Most of this code is taken verbatim from the code
+//       for jpeg_mem_src() in libjpeg.
+//-----------------------------------------------------------------------------
+static void JpegMemSrc(j_decompress_ptr cinfo, unsigned char * inbuffer,
+        unsigned long insize)
+{
+	if (inbuffer == NULL || insize == 0)  /* Treat empty input as fatal error */
+		ERREXIT(cinfo, JERR_INPUT_EMPTY);
+
+	/* The source object is made permanent so that a series of JPEG images
+	 * can be read from the same buffer by calling jpeg_mem_src only before
+	 * the first one.
+	 */
+	if (cinfo->src == NULL)     /* first time for this JPEG object? */
+	{
+		char * cache = (char *)(*cinfo->mem->alloc_small)(
+			(j_common_ptr)cinfo,
+			JPOOL_PERMANENT,
+			(sizeof(jpeg_source_mgr) + sizeof(unsigned char *) +
+			 sizeof(unsigned long)));
+
+		cinfo->src = (jpeg_source_mgr *)cache;
+		cache += sizeof(jpeg_source_mgr);
+		*(unsigned char **)cache = inbuffer;
+		cache += sizeof(unsigned char *);
+		*(unsigned long *)cache = insize;
+	}
+
+	// Chain onto jpeg_mem_src(), which will use any jpeg_source_mgr object we
+	// allocated ourselves (jpeg_mem_src() references static functions within
+	// its own source module, so we can't reimplement the whole thing from
+	// here).
+	jpeg_mem_src(cinfo, inbuffer, insize);
+}
+
+//-----------------------------------------------------------------------------
+// Name: jpeg_mem_reinitsrc()
+// Desc: Helper function to reinitialize a jpeg_decompress_struct previously
+//       initialized using JpegMemSrc() and used for decompression.
+//-----------------------------------------------------------------------------
+static void JpegMemReinitSrc(j_decompress_ptr cinfo)
+{
+	char * cache = (char *)cinfo->src;
+	jpeg_source_mgr * src = (jpeg_source_mgr *)cache;
+	cache += sizeof(jpeg_source_mgr);
+	unsigned char * buffer = *(unsigned char **)cache;
+	cache += sizeof(unsigned char *);
+	unsigned long size = *(unsigned long*)cache;
+
+	jpeg_destroy_decompress(cinfo);
+	jpeg_create_decompress(cinfo);
+	JpegMemSrc(cinfo, buffer, size);
+	jpeg_read_header(cinfo, TRUE);
 }
 
 //-----------------------------------------------------------------------------
@@ -3155,7 +3216,7 @@ HRESULT TextureContainer::CopyJPEGDataToSurface(LPDIRECTDRAWSURFACE7 Surface)
 	}
 
 	(void)jpeg_finish_decompress(cinfo);
-	(void)jpeg_mem_reinitsrc((void *)cinfo);
+	JpegMemReinitSrc(cinfo);
 	delete buffer;
 
 	pddsTempSurface->Unlock(0);
@@ -3759,7 +3820,7 @@ HRESULT TextureContainer::LoadJpegFileNoDecomp(TCHAR * strPathname)
 		return E_FAIL;
 	}
 
-	jpeg_mem_src(cinfo, (char *)memjpeg, taille);
+	JpegMemSrc(cinfo, memjpeg, taille);
 
 	if (JPEGError)
 	{
@@ -3787,7 +3848,7 @@ HRESULT TextureContainer::LoadJpegFileNoDecomp(TCHAR * strPathname)
 	m_dwHeight = cinfo->image_height;
 	m_dwBPP = 24;
 	m_pJPEGData_ex = memjpeg;
-	(void)jpeg_mem_reinitsrc((void *)cinfo);
+	JpegMemReinitSrc(cinfo);
 
 	return S_OK;
 }
