@@ -1,3 +1,9 @@
+newoption
+{
+	trigger = "with-sdl",
+	description = "Force the use of SDL/OpenGL on Windows (all other platforms use it by default)."
+}
+
 solution "ArxFatalis"
 	configurations { "Debug", "Release" }
 	location "build"
@@ -13,6 +19,22 @@ solution "ArxFatalis"
 		"lib/otherlibs",
 		"lib",
 	}
+
+	configuration "with-sdl or not windows"
+		defines { "USE_SDL=1" }
+
+	configuration { "with-sdl", "not windows" }
+		buildoptions { "`sdl-config --cflags`" }
+		linkoptions { "`sdl-config --libs`" }
+
+	configuration { "with-sdl", "windows" }
+		includedirs
+		{
+			-- SDL headers are stored in a separate folder to keep
+			-- us from accidentally including them when we want to
+			-- use system headers on non-Windows platforms.
+			"Include/OtherLibs/SDL",
+		}
 
 	configuration "Debug"
 		flags { "Symbols" }
@@ -169,6 +191,15 @@ solution "ArxFatalis"
 			{
 				"z",
 				"jpeg",
+			}
+
+		-- SDL library link settings are already specified using
+		-- sdl-config on non-Windows platforms.
+		configuration { "with-sdl", "windows" }
+			links
+			{
+				"SDL",
+				"SDLmain",
 			}
 
 	project "ARX_SCRIPT_DEBUGGER"
