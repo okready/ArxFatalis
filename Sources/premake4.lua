@@ -57,6 +57,7 @@ solution "ArxFatalis"
 		}
 
 	project "ArxCommon"
+		uuid "9C5EA702-89FA-410A-99D9-7E69678273E2"
 		kind "StaticLib"
 		language "C++"
 		flags { "Unicode" }
@@ -69,6 +70,7 @@ solution "ArxFatalis"
 		}
 
 	project "Athena"
+		uuid "A3E68F99-7ABE-4E8f-BEFE-E015B9648B36"
 		kind "SharedLib"
 		language "C++"
 		defines { "_USRDLL", "_MBCS", "ATHENA_EXPORTS", "AAL_APIDLL" }
@@ -95,6 +97,7 @@ solution "ArxFatalis"
 			linkoptions { "/NODEFAULTLIB:LIBC" }
 
 	project "EErie"
+		uuid "8FCD0821-34F6-4844-8583-974F99BAFC8D"
 		kind "StaticLib"
 		language "C++"
 		defines { "_LIB", "_MBCS" }
@@ -107,6 +110,7 @@ solution "ArxFatalis"
 		}
 
 	project "HERMES"
+		uuid "EEFA95F9-40CA-403E-BCFD-4D114D4D924A"
 		kind "StaticLib"
 		language "C++"
 		defines { "_LIB", "_MBCS" }
@@ -121,6 +125,7 @@ solution "ArxFatalis"
 		}
 
 	project "Mercury"
+		uuid "8AF8CBF1-ACC8-4662-921A-591A0096DDCC"
 		kind "StaticLib"
 		language "C++"
 		defines { "_LIB", "_MBCS" }
@@ -132,6 +137,7 @@ solution "ArxFatalis"
 		}
 
 	project "MINOS"
+		uuid "132C430A-9DCD-4C4b-895D-DDEC7CB16B29"
 		kind "StaticLib"
 		language "C++"
 		defines { "_LIB", "_MBCS" }
@@ -143,6 +149,7 @@ solution "ArxFatalis"
 		}
 
 	project "DANAE"
+		uuid "6AC9BAA9-D541-4B7B-820D-3C65D0E8FBAF"
 		kind "WindowedApp"
 		language "C++"
 		flags { "Unicode" }
@@ -203,6 +210,7 @@ solution "ArxFatalis"
 			}
 
 	project "ARX_SCRIPT_DEBUGGER"
+		uuid "1F80DAE1-4560-41FC-9D42-E13F82B0D60B"
 		kind "SharedLib"
 		language "C++"
 		defines { "_USRDLL", "_MBCS", "ARX_SCRIPT_DEBUGGER_EXPORTS", "APIDLL" }
