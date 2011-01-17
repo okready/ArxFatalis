@@ -4,5 +4,6 @@ Sources/DANAE/Debug/
 Sources/DANAE/Release/
 Sources/lib/*.lib
 Sources/lib/*.idb
+Sources/lib/*.pdb
 game/
 *~
