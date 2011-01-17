@@ -251,7 +251,7 @@ void	CalcFPS(BOOL reset = FALSE);
 
 void	SetZBias(const LPDIRECT3DDEVICE7, int);
 
-#if WITH_SDL
+#if USE_SDL
 #include "EERIESdlApp.h"
 typedef CSdlApplication CApplication;
 #else
