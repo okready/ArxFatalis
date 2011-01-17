@@ -58,7 +58,6 @@ extern		long		USEINTERNORM;
 extern 		long 		INTER_DRAW;
 
 extern		float		dists[];
-extern bool bZBUFFER;
 extern bool bGATI8500;
 extern bool bSoftRender;
 extern bool bALLOW_BUMP;

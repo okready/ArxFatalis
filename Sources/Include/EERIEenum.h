@@ -38,6 +38,8 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 // Desc: Functions to enumerate DDraw/D3D drivers, devices, and modes.
 #ifndef D3DENUM_H
 #define D3DENUM_H
+
+#define D3D_OVERLOADS
 #include <d3d.h>
 #include <ARX_Common.h>
 

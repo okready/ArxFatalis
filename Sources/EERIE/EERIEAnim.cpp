@@ -103,7 +103,6 @@ extern long ForceIODraw;
 extern long INTER_DRAW;
 extern long INTER_COMPUTE;
 extern long FRAME_COUNT;
-extern bool bZBUFFER;
 extern unsigned long ulBKGColor;
 extern bool bALLOW_BUMP;
 extern CMY_DYNAMIC_VERTEXBUFFER *pDynamicVertexBuffer;

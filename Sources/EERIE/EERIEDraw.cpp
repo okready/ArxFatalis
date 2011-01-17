@@ -80,7 +80,6 @@ extern float FrameTime;
 extern EERIE_3D e3dPosBump;
 extern bool bALLOW_BUMP;
 extern bool bSoftRender;
-extern bool bZBUFFER;
 
 /*---------------------------------------------------------------------------------------------------------*/
 typedef struct
@@ -838,7 +837,7 @@ int			nb;
 	du*=alpha;
 	dv*=alpha;
 	
-	if(g_pD3DApp->m_pDeviceInfo->wNbTextureSimultaneous>1)
+	if(g_pApp->m_pDeviceInfo->wNbTextureSimultaneous>1)
 	{
 		D3DTLVERTEX2UV	v[4];
 		pd3dDevice->SetTextureStageState(0,D3DTSS_COLORARG1,D3DTA_TEXTURE);

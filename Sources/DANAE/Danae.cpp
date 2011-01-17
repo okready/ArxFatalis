@@ -1731,6 +1731,7 @@ INT WINAPI WinMain( HINSTANCE _hInstance, HINSTANCE, LPSTR strCmdLine, INT )
 		danaeApp.CreationSizeY = 552;
 	}
 
+#if !USE_SDL
 	if (((GAME_EDITOR) && (!MOULINEX) && (!(FINAL_RELEASE))) || NEED_EDITOR)
 	{
 		GAME_EDITOR=1;
@@ -1747,6 +1748,7 @@ INT WINAPI WinMain( HINSTANCE _hInstance, HINSTANCE, LPSTR strCmdLine, INT )
 		danaeApp.ToolBar->String=NULL;
 	}
 	else 
+#endif
 	{
 
 		danaeApp.CreationFlags= WCF_NOSTDPOPUP;
@@ -1755,7 +1757,7 @@ INT WINAPI WinMain( HINSTANCE _hInstance, HINSTANCE, LPSTR strCmdLine, INT )
 	}
 
 	Dbg_str("Application Creation");
-	g_pD3DApp = &danaeApp;
+	g_pApp = &danaeApp;
 
     if( FAILED( danaeApp.Create( hInstance, strCmdLine ) ) )
 		return 0;
@@ -1885,7 +1887,7 @@ INT WINAPI WinMain( HINSTANCE _hInstance, HINSTANCE, LPSTR strCmdLine, INT )
 // DANAE()
 //  Application constructor. Sets attributes for the app.
 //*************************************************************************************
-DANAE::DANAE() : CD3DApplication()
+DANAE::DANAE() : CApplication()
 {
 	m_strWindowTitle  = TEXT("ARX Fatalis");
     m_bAppUseZBuffer  = TRUE;
@@ -8723,7 +8725,7 @@ LRESULT DANAE::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam,
 		break;
 	}
 
-    return CD3DApplication::MsgProc( hWnd, uMsg, wParam, lParam );
+    return CApplication::MsgProc( hWnd, uMsg, wParam, lParam );
 }
 void ReleaseSystemObjects()
 {

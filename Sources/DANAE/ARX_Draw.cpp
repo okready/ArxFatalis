@@ -83,7 +83,6 @@ extern ANIM_HANDLE * herowalk;
 extern ANIM_HANDLE * herorun;
 extern EERIE_3DOBJ * eyeballobj; 
 extern TextureContainer * Boom;
-extern bool bZBUFFER;
 
 POLYBOOM polyboom[MAX_POLYBOOM];
 

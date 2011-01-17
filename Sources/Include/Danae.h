@@ -158,7 +158,7 @@ typedef struct
 //-----------------------------------------------------------------------------
 // Class DANAE
 //-----------------------------------------------------------------------------
-class DANAE : public CD3DApplication
+class DANAE : public CApplication
 {
 
 	protected:

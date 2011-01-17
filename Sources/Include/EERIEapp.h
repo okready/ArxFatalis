@@ -51,6 +51,7 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 //
 // Code:	Cyril Meynier
 //			Sébastien Scieux	(Zbuffer)
+//			Ted Cipicchio		(SDL/OpenGL support)
 //
 // Copyright (c) 1999 ARKANE Studios SA. All rights reserved
 //////////////////////////////////////////////////////////////////////////////////////
@@ -58,16 +59,8 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #ifndef  EERIEAPP_H
 #define  EERIEAPP_H
 
-#define  D3D_OVERLOADS
-
-#include <windows.h>
-#include <commctrl.h>
-#include <d3d.h>
 #include "EERIEFrame.h"
 #include "EERIEEnum.h"
-
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
 
 //-----------------------------------------------------------------------------
 #define HIDE_BACKGROUND 1
@@ -225,17 +218,6 @@ typedef struct
 
 typedef struct
 {
-	HWND		hWnd;
-	long		CreationToolBar;
-	long		ToolBarNb;
-	LPCTBBUTTON Buttons;
-	long		Bitmap;
-	char*		String;
-	long		Type;
-} EERIETOOLBAR;
-
-typedef struct
-{
 	short			nbkeydown;
 	unsigned char	inkey[255];
 	char			_CAPS;
@@ -245,8 +227,8 @@ typedef struct
 
 //-----------------------------------------------------------------------------
 extern PROJECT			Project;
+extern bool				bZBUFFER;
 extern float			FPS;
-extern LPDIRECT3DDEVICE7 GDevice;
 extern int				ModeLight;
 
 extern short WINDOWCREATIONSIZEX;
@@ -255,149 +237,6 @@ extern long ViewMode;
 
 extern long EERIEMouseXdep, EERIEMouseYdep, EERIEMouseX, EERIEMouseY, EERIEWheel;
 extern long EERIEMouseButton, EERIEMouseGrab;
-extern HWND MSGhwnd;
-
-//-----------------------------------------------------------------------------
-// Name: class CD3DApplication
-// Desc:
-//-----------------------------------------------------------------------------
-class CD3DApplication
-{
-		// Internal variables and member functions
-		BOOL            m_bSingleStep;
-		DWORD           m_dwBaseTime;
-		DWORD           m_dwStopTime;
-
-		HRESULT Render3DEnvironment();
-		VOID    DisplayFrameworkError(HRESULT, DWORD);
-
-public:
-		float			fMouseSensibility;
-protected:
-		// Overridable variables for the app
-		TCHAR*			m_strWindowTitle;
-		BOOL			m_bAppUseZBuffer;
-		BOOL			m_bAppUseStereo;
-		BOOL			m_bShowStats;
-		HRESULT(*m_fnConfirmDevice)(DDCAPS *, D3DDEVICEDESC7 *);
-		HWND				 CreateToolBar(HWND hWndParent, long tbb, HINSTANCE hInst);
-
-		// Overridable functions for the 3D scene created by the app
-		virtual HRESULT OneTimeSceneInit()
-		{
-			return S_OK;
-		}
-		virtual HRESULT DeleteDeviceObjects()
-		{
-			return S_OK;
-		}
-		virtual HRESULT FrameMove(FLOAT)
-		{
-			return S_OK;
-		}
-		virtual HRESULT RestoreSurfaces()
-		{
-			return S_OK;
-		}
-		virtual HRESULT FinalCleanup()
-		{
-			return S_OK;
-		}
-
-		// Overridable power management (APM) functions
-		virtual LRESULT OnQuerySuspend(DWORD dwFlags);
-		virtual LRESULT OnResumeSuspend(DWORD dwData);
-		virtual HRESULT BeforeRun()
-		{
-			return S_OK;
-		}
-
-		//zbuffer
-		short			w_zdecal;
-		long			dw_zmask;
-		float			f_zmul;
-		long			dw_zXmodulo;
-
-	public:
-		LPDIRECTDRAW7			m_pDD;
-		LPDIRECT3DDEVICE7		m_pd3dDevice;
-		LPDIRECTDRAWSURFACE7	m_pddsRenderTarget;
-		LPDIRECTDRAWSURFACE7	m_pddsRenderTargetLeft;	// For stereo modes
-		DDSURFACEDESC2			m_ddsdRenderTarget;
-		int						WinManageMess();
-		VOID					Cleanup3DEnvironment();
-		LPDIRECT3D7				m_pD3D;
-		void					EvictManagedTextures();
-		virtual HRESULT Render()
-		{
-			return S_OK;
-		}
-		virtual HRESULT InitDeviceObjects()
-		{
-			return S_OK;
-		}
-		VOID					OutputText( DWORD x, DWORD y, char * str );
- 
-		HRESULT	SetClipping( float x1, float y1, float x2, float y2 );
- 
-		BOOL					m_bFrameMoving;
-		BOOL					m_bActive;
-		HRESULT					Change3DEnvironment();
-		HRESULT					Initialize3DEnvironment();
-		BOOL					m_bReady;
-		D3DEnum_DeviceInfo*		m_pDeviceInfo;
-		HWND					m_hWnd;
-		HWND					m_hWndRender;
-		WNDPROC					m_OldProc;
-		HWND					m_dlghWnd;
-		BOOL					b_dlg;
-		long					d_dlgframe;
-		void					EERIEMouseUpdate(short x, short y);
-
-		// Functions to create, run, pause, and clean up the application
-		virtual HRESULT			Create(HINSTANCE, char *);
-		virtual INT				Run();
-		virtual LRESULT			MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-		virtual VOID			Pause(BOOL bPause);
-		LRESULT					SwitchFullScreen() ;
-
-		CD3DFramework7*			m_pFramework;
-		KEYBOARD_MNG			kbd;
-
-		char					StatusText[512];
-		short					CreationSizeX;
-		short					CreationSizeY;
-		long					CreationFlags;
-		long					CreationMenu;
-		EERIETOOLBAR*			ToolBar;
-		HWND					owner;
- 
-		void*					logical;
-		void*					zbuf;
-		long					zbits;
-		long					nbbits;
- 
-		void*					Lock();
-		bool					Unlock();
-		DDSURFACEDESC2			ddsd;
-		DDSURFACEDESC2			ddsd2;
-
-		void					EnableZBuffer();
-
-		LPDIRECTDRAWGAMMACONTROL lpDDGammaControl;	//gamma control
-		DDGAMMARAMP				DDGammaRamp;		//modified ramp value
-		DDGAMMARAMP				DDGammaOld;			//backup gamma values
-		HRESULT					UpdateGamma();
- 
-		float					GetZBufferMax();
-		float					zbuffer_max;
-		float					zbuffer_max_div;
-
-		// Class constructor
-		CD3DApplication();
-};
-
-extern CD3DApplication * g_pD3DApp;
 
 //******************************************************************************
 // MESSAGE BOXES
@@ -411,5 +250,15 @@ char*	MakeDir(char * tex, char * tex2);
 void	CalcFPS(BOOL reset = FALSE);
 
 void	SetZBias(const LPDIRECT3DDEVICE7, int);
+
+#if WITH_SDL
+#include "EERIESdlApp.h"
+typedef CSdlApplication CApplication;
+#else
+#include "EERIED3DApp.h"
+typedef CD3DApplication CApplication;
+#endif
+
+extern CApplication * g_pApp;
 
 #endif // D3DAPP_H

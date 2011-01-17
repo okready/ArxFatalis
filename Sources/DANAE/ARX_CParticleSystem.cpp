@@ -34,6 +34,7 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #include "arx_cparticle.h"
 #include "ARX_CParticleParams.h"
 
+#define D3D_OVERLOADS
 #include <d3d.h>
 
 #include <list>

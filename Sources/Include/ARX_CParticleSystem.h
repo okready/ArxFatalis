@@ -27,7 +27,10 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #define ARX_CPARTICLESYSTEM_H
 
 #include "eerietypes.h"
+
+#define D3D_OVERLOADS
 #include <d3d.h>
+
 #include <list>
 #include <vector>
 using namespace std;

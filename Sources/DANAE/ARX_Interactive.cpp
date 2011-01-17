@@ -2596,7 +2596,7 @@ INTERACTIVE_OBJ * AddFix(LPDIRECT3DDEVICE7 pd3dDevice, char * file, long flags)
 
 	char texx[HERMES_PATH_SIZE];
 	sprintf(texx, "AddFix - %s", file);
-	SendConsole(texx, 2, 0, (HWND)g_pD3DApp->m_hWnd);
+	SendConsole(texx, 2, 0, (HWND)g_pApp->m_hWnd);
 
 	INTERACTIVE_OBJ * io = CreateFreeInter();
 
@@ -2719,7 +2719,7 @@ INTERACTIVE_OBJ * AddCamera(LPDIRECT3DDEVICE7 pd3dDevice, char * file)
 
 	char texx[HERMES_PATH_SIZE];
 	sprintf(texx, "AddCamera - %s", file);
-	SendConsole(texx, 2, 0, (HWND)g_pD3DApp->m_hWnd);
+	SendConsole(texx, 2, 0, (HWND)g_pApp->m_hWnd);
 
 	INTERACTIVE_OBJ * io = CreateFreeInter();
 	EERIEPOLY * ep;
@@ -2791,7 +2791,7 @@ INTERACTIVE_OBJ * AddMarker(LPDIRECT3DDEVICE7 pd3dDevice, char * file)
 
 	char texx[HERMES_PATH_SIZE];
 	sprintf(texx, "AddMarker - %s", file);
-	SendConsole(texx, 2, 0, (HWND)g_pD3DApp->m_hWnd);
+	SendConsole(texx, 2, 0, (HWND)g_pApp->m_hWnd);
 
 	INTERACTIVE_OBJ * io = CreateFreeInter();
 	EERIEPOLY * ep;
@@ -3064,7 +3064,7 @@ INTERACTIVE_OBJ * AddNPC(LPDIRECT3DDEVICE7 pd3dDevice, char * file, long flags)
 
 	char texx[HERMES_PATH_SIZE];
 	sprintf(texx, "AddNPC - %s", file);
-	SendConsole(texx, 2, 0, (HWND)g_pD3DApp->m_hWnd);
+	SendConsole(texx, 2, 0, (HWND)g_pApp->m_hWnd);
 
 	INTERACTIVE_OBJ * io = CreateFreeInter();
 	EERIEPOLY * ep;
