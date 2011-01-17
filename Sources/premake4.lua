@@ -175,6 +175,7 @@ solution "ArxFatalis"
 		kind "SharedLib"
 		language "C++"
 		defines { "_USRDLL", "_MBCS", "ARX_SCRIPT_DEBUGGER_EXPORTS", "APIDLL" }
+		targetdir "../game"
 		files
 		{
 			"DANAE_Debugger/resource.h",
@@ -183,12 +184,6 @@ solution "ArxFatalis"
 			"DANAE_Debugger/SCRIPT_DEBUGGER_Dialog.cpp",
 			"DANAE_Debugger/SCRIPT_DEBUGGER_Dialog.h",
 		}
-
-		configuration "Debug"
-			targetdir "DANAE/Debug"
-
-		configuration "Release"
-			targetdir "DANAE/Release"
 
 		configuration "windows"
 			links
