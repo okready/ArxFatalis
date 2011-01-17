@@ -43,6 +43,7 @@ solution "ArxFatalis"
 		files
 		{
 			"ArxCommon/*.cpp",
+			"Include/ARX_Common.h",
 		}
 
 	project "Athena"
@@ -54,6 +55,7 @@ solution "ArxFatalis"
 		{
 			"Athena/*.cpp",
 			"Athena/*.h",
+			"Include/Athena*",
 		}
 		excludes
 		{
@@ -78,6 +80,8 @@ solution "ArxFatalis"
 		files
 		{
 			"EERIE/*.cpp",
+			"Include/EERIE*",
+			"Include/TheoData.h",
 		}
 
 	project "HERMES"
@@ -89,6 +93,9 @@ solution "ArxFatalis"
 		{
 			"HERMES/*.cpp",
 			"HERMES/HERMESnet.rc",
+			"Include/HERMES*",
+			"Include/resource.h",
+			"Include/ResourceHERMESnet.h",
 		}
 
 	project "Mercury"
@@ -99,6 +106,7 @@ solution "ArxFatalis"
 		files
 		{
 			"Mercury/*.cpp",
+			"Include/Mercury*",
 		}
 
 	project "MINOS"
@@ -109,6 +117,7 @@ solution "ArxFatalis"
 		files
 		{
 			"MINOS/*.cpp",
+			"Include/Minos*",
 		}
 
 	project "DANAE"
@@ -123,6 +132,9 @@ solution "ArxFatalis"
 			"DANAE/*.cpp",
 			"DANAE/*.h",
 			"DANAE/DANAE.rc",
+			"Include/ARX*",
+			"Include/Danae*",
+			"Include/DANAE*",
 		}
 		links
 		{
