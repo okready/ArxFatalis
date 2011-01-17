@@ -19,7 +19,10 @@ solution "ArxFatalis"
 		"lib",
 	}
 
-	configuration "not windows or *SDL"
+	configuration "not windows"
+		defines { "USE_SDL=1" }
+
+	configuration "*SDL"
 		defines { "USE_SDL=1" }
 
 	configuration "not windows"
