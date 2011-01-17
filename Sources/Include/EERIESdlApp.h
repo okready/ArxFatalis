@@ -23,77 +23,30 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 ===========================================================================
 */
 //////////////////////////////////////////////////////////////////////////////////////
-//   @@        @@@        @@@                @@                           @@@@@     //
-//   @@@       @@@@@@     @@@     @@        @@@@                         @@@  @@@   //
-//   @@@       @@@@@@@    @@@    @@@@       @@@@      @@                @@@@        //
-//   @@@       @@  @@@@   @@@  @@@@@       @@@@@@     @@@               @@@         //
-//  @@@@@      @@  @@@@   @@@ @@@@@        @@@@@@@    @@@            @  @@@         //
-//  @@@@@      @@  @@@@  @@@@@@@@         @@@@ @@@    @@@@@         @@ @@@@@@@      //
-//  @@ @@@     @@  @@@@  @@@@@@@          @@@  @@@    @@@@@@        @@ @@@@         //
-// @@@ @@@    @@@ @@@@   @@@@@            @@@@@@@@@   @@@@@@@      @@@ @@@@         //
-// @@@ @@@@   @@@@@@@    @@@@@@           @@@  @@@@   @@@ @@@      @@@ @@@@         //
-// @@@@@@@@   @@@@@      @@@@@@@@@@      @@@    @@@   @@@  @@@    @@@  @@@@@        //
-// @@@  @@@@  @@@@       @@@  @@@@@@@    @@@    @@@   @@@@  @@@  @@@@  @@@@@        //
-//@@@   @@@@  @@@@@      @@@      @@@@@@ @@     @@@   @@@@   @@@@@@@    @@@@@ @@@@@ //
-//@@@   @@@@@ @@@@@     @@@@        @@@  @@      @@   @@@@   @@@@@@@    @@@@@@@@@   //
-//@@@    @@@@ @@@@@@@   @@@@             @@      @@   @@@@    @@@@@      @@@@@      //
-//@@@    @@@@ @@@@@@@   @@@@             @@      @@   @@@@    @@@@@       @@        //
-//@@@    @@@  @@@ @@@@@                          @@            @@@                  //
-//            @@@ @@@                           @@             @@        STUDIOS    //
-//////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////
-// EERIED3DApp
+// EERIESdlApp
 //////////////////////////////////////////////////////////////////////////////////////
 //
 // Description:
 //
 // Updates: (date) (person) (update)
 //
-// Code:	Cyril Meynier
-//			Sébastien Scieux	(Zbuffer)
-//			Ted Cipicchio		(SDL/OpenGL support)
+// Code:	Ted Cipicchio
 //
-// Copyright (c) 1999 ARKANE Studios SA. All rights reserved
+// Copyright (c) 1999-2011 ARKANE Studios SA. All rights reserved
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef  EERIED3DAPP_H
-#define  EERIED3DAPP_H
+#ifndef  EERIESDLAPP_H
+#define  EERIESDLAPP_H
 
 #ifndef EERIEAPP_H
-# error EERIED3DApp.h should only be included via EERIEapp.h.
+# error EERIESdlApp.h should only be included via EERIEapp.h.
 #endif
 
-#define  D3D_OVERLOADS
-
-#include <windows.h>
-#include <commctrl.h>
-#include <d3d.h>
-
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-
 //-----------------------------------------------------------------------------
-typedef struct
-{
-	HWND		hWnd;
-	long		CreationToolBar;
-	long		ToolBarNb;
-	LPCTBBUTTON Buttons;
-	long		Bitmap;
-	char*		String;
-	long		Type;
-} EERIETOOLBAR;
-
-//-----------------------------------------------------------------------------
-extern LPDIRECT3DDEVICE7 GDevice;
-
-extern HWND MSGhwnd;
-
-//-----------------------------------------------------------------------------
-// Name: class CD3DApplication
+// Name: class CSdlApplication
 // Desc:
 //-----------------------------------------------------------------------------
-class CD3DApplication
+class CSdlApplication
 {
 		// Internal variables and member functions
 		BOOL            m_bSingleStep;
@@ -103,17 +56,11 @@ class CD3DApplication
 		HRESULT Render3DEnvironment();
 		VOID    DisplayFrameworkError(HRESULT, DWORD);
 
-public:
-		float			fMouseSensibility;
-protected:
-		// Overridable variables for the app
-		TCHAR*			m_strWindowTitle;
-		BOOL			m_bAppUseZBuffer;
-		BOOL			m_bAppUseStereo;
-		BOOL			m_bShowStats;
-		HRESULT(*m_fnConfirmDevice)(DDCAPS *, D3DDEVICEDESC7 *);
-		HWND				 CreateToolBar(HWND hWndParent, long tbb, HINSTANCE hInst);
+	public:
+		float fMouseSensibility;
 
+	protected:
+		// Overridable variables for the app
 		// Overridable functions for the 3D scene created by the app
 		virtual HRESULT OneTimeSceneInit()
 		{
@@ -136,30 +83,10 @@ protected:
 			return S_OK;
 		}
 
-		// Overridable power management (APM) functions
-		virtual LRESULT OnQuerySuspend(DWORD dwFlags);
-		virtual LRESULT OnResumeSuspend(DWORD dwData);
-		virtual HRESULT BeforeRun()
-		{
-			return S_OK;
-		}
-
-		//zbuffer
-		short			w_zdecal;
-		long			dw_zmask;
-		float			f_zmul;
-		long			dw_zXmodulo;
-
 	public:
-		LPDIRECTDRAW7			m_pDD;
-		LPDIRECT3DDEVICE7		m_pd3dDevice;
-		LPDIRECTDRAWSURFACE7	m_pddsRenderTarget;
-		LPDIRECTDRAWSURFACE7	m_pddsRenderTargetLeft;	// For stereo modes
-		DDSURFACEDESC2			m_ddsdRenderTarget;
-		int						WinManageMess();
-		VOID					Cleanup3DEnvironment();
-		LPDIRECT3D7				m_pD3D;
-		void					EvictManagedTextures();
+		int WinManageMess();
+		void Cleanup3DEnvironment();
+		void EvictManagedTextures();
 		virtual HRESULT Render()
 		{
 			return S_OK;
@@ -168,20 +95,17 @@ protected:
 		{
 			return S_OK;
 		}
-		VOID					OutputText( DWORD x, DWORD y, char * str );
- 
+		void OutputText( DWORD x, DWORD y, char * str );
+
 		HRESULT	SetClipping( float x1, float y1, float x2, float y2 );
- 
+
 		BOOL					m_bFrameMoving;
 		BOOL					m_bActive;
 		HRESULT					Change3DEnvironment();
 		HRESULT					Initialize3DEnvironment();
 		BOOL					m_bReady;
 		D3DEnum_DeviceInfo*		m_pDeviceInfo;
-		HWND					m_hWnd;
-		HWND					m_hWndRender;
 		WNDPROC					m_OldProc;
-		HWND					m_dlghWnd;
 		BOOL					b_dlg;
 		long					d_dlgframe;
 		void					EERIEMouseUpdate(short x, short y);
@@ -193,7 +117,7 @@ protected:
 		virtual VOID			Pause(BOOL bPause);
 		LRESULT					SwitchFullScreen() ;
 
-		CD3DFramework7*			m_pFramework;
+		CSdlFramework*			m_pFramework;
 		KEYBOARD_MNG			kbd;
 
 		char					StatusText[512];
@@ -201,8 +125,6 @@ protected:
 		short					CreationSizeY;
 		long					CreationFlags;
 		long					CreationMenu;
-		EERIETOOLBAR*			ToolBar;
-		HWND					owner;
  
 		void*					logical;
 		void*					zbuf;
@@ -211,8 +133,6 @@ protected:
  
 		void*					Lock();
 		bool					Unlock();
-		DDSURFACEDESC2			ddsd;
-		DDSURFACEDESC2			ddsd2;
 
 		void					EnableZBuffer();
 
@@ -226,7 +146,7 @@ protected:
 		float					zbuffer_max_div;
 
 		// Class constructor
-		CD3DApplication();
+		CSdlApplication();
 };
 
-#endif // EERIED3DAPP_H
+#endif // EERIESDLAPP_H

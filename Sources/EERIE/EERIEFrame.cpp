@@ -147,7 +147,7 @@ HRESULT CD3DFramework7::DestroyObjects()
 
 	m_pDD = NULL;
 
-	return (nDD == 0 && nD3D == 0) ? S_OK : D3DFWERR_NONZEROREFCOUNT;
+	return (nDD == 0 && nD3D == 0) ? S_OK : FWERR_NONZEROREFCOUNT;
 }
 
 
@@ -163,16 +163,16 @@ HRESULT CD3DFramework7::Initialize(HWND hWnd, GUID * pDriverGUID,
 
 	// Check params. Note: A NULL mode is valid for windowed modes only.
 	if ((NULL == hWnd) || (NULL == pDeviceGUID) ||
-	        (NULL == pMode && (dwFlags & D3DFW_FULLSCREEN)))
+	        (NULL == pMode && (dwFlags & FW_FULLSCREEN)))
 		return E_INVALIDARG;
 
 	// Setup state for windowed/fullscreen mode
 	m_hWnd          = hWnd;
 	m_bIsStereo     = FALSE;
-	m_bIsFullscreen = (dwFlags & D3DFW_FULLSCREEN) ? TRUE : FALSE;
+	m_bIsFullscreen = (dwFlags & FW_FULLSCREEN) ? TRUE : FALSE;
 
 	// Support stereoscopic viewing for fullscreen modes which support it
-	if ((dwFlags & D3DFW_STEREO) && (dwFlags & D3DFW_FULLSCREEN))
+	if ((dwFlags & FW_STEREO) && (dwFlags & FW_FULLSCREEN))
 		if (pMode->ddsCaps.dwCaps2 & DDSCAPS2_STEREOSURFACELEFT)
 			m_bIsStereo = TRUE;
 
@@ -214,7 +214,7 @@ HRESULT CD3DFramework7::CreateEnvironment(GUID * pDriverGUID, GUID * pDeviceGUID
 		return hr;
 
 	// Create the front and back buffers, and attach a clipper
-	if (dwFlags & D3DFW_FULLSCREEN)
+	if (dwFlags & FW_FULLSCREEN)
 		hr = CreateFullscreenBuffers(pMode);
 	else
 		hr = CreateWindowedBuffers();
@@ -229,7 +229,7 @@ HRESULT CD3DFramework7::CreateEnvironment(GUID * pDriverGUID, GUID * pDeviceGUID
 		return hr;
 
 	// Create and attach the zbuffer
-	if (dwFlags & D3DFW_ZBUFFER)
+	if (dwFlags & FW_ZBUFFER)
 		hr = CreateZBuffer(pDeviceGUID);
 
 	if (FAILED(hr))
@@ -284,7 +284,7 @@ HRESULT CD3DFramework7::CreateDirectDraw(GUID * pDriverGUID, DWORD dwFlags)
 	                              IID_IDirectDraw7, NULL)))
 	{
 		DEBUG_MSG(_T("Could not create DirectDraw"));
-		return D3DFWERR_NODIRECTDRAW;
+		return FWERR_NODIRECTDRAW;
 	}
 
 	// Set the Windows cooperative level
@@ -294,13 +294,13 @@ HRESULT CD3DFramework7::CreateDirectDraw(GUID * pDriverGUID, DWORD dwFlags)
 		dwCoopFlags = DDSCL_ALLOWREBOOT | DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN;
 
 	// By default, set the flag to allow D3D to optimize floating point calcs
-	if (0L == (dwFlags & D3DFW_NO_FPUSETUP))
+	if (0L == (dwFlags & FW_NO_FPUSETUP))
 		dwCoopFlags |= DDSCL_FPUSETUP;
 
 	if (FAILED(m_pDD->SetCooperativeLevel(m_hWnd, dwCoopFlags)))
 	{
 		DEBUG_MSG(_T("Couldn't set cooperative level"));
-		return D3DFWERR_COULDNTSETCOOPLEVEL;
+		return FWERR_COULDNTSETCOOPLEVEL;
 	}
 
 	// Check that we are NOT in a palettized display. That case will fail,
@@ -310,7 +310,7 @@ HRESULT CD3DFramework7::CreateDirectDraw(GUID * pDriverGUID, DWORD dwFlags)
 	m_pDD->GetDisplayMode(&ddsd);
 
 	if (ddsd.ddpfPixelFormat.dwRGBBitCount <= 8)
-		return D3DFWERR_INVALIDMODE;
+		return FWERR_INVALIDMODE;
 
 	return S_OK;
 }
@@ -346,7 +346,7 @@ HRESULT CD3DFramework7::CreateFullscreenBuffers(DDSURFACEDESC2 * pddsd)
 	                                 pddsd->dwRefreshRate, dwModeFlags)))
 	{
 		DEBUG_MSG(_T("Unable to set display mode"));
-		return D3DFWERR_BADDISPLAYMODE;
+		return FWERR_BADDISPLAYMODE;
 	}
 
 	// Setup to create the primary surface w/backbuffer
@@ -372,7 +372,7 @@ HRESULT CD3DFramework7::CreateFullscreenBuffers(DDSURFACEDESC2 * pddsd)
 		DEBUG_MSG(_T("Error: Can't create primary surface"));
 
 		if (hr != DDERR_OUTOFVIDEOMEMORY)
-			return D3DFWERR_NOPRIMARY;
+			return FWERR_NOPRIMARY;
 
 		DEBUG_MSG(_T("Error: Out of video memory"));
 		return DDERR_OUTOFVIDEOMEMORY;
@@ -385,7 +385,7 @@ HRESULT CD3DFramework7::CreateFullscreenBuffers(DDSURFACEDESC2 * pddsd)
 	                &m_pddsBackBuffer)))
 	{
 		DEBUG_ERR(hr, _T("Error: Can't get the backbuffer"));
-		return D3DFWERR_NOBACKBUFFER;
+		return FWERR_NOBACKBUFFER;
 	}
 
 	// Increment the backbuffer count (for consistency with windowed mode)
@@ -401,7 +401,7 @@ HRESULT CD3DFramework7::CreateFullscreenBuffers(DDSURFACEDESC2 * pddsd)
 		                &m_pddsBackBufferLeft)))
 		{
 			DEBUG_ERR(hr, _T("Error: Can't get the left backbuffer"));
-			return D3DFWERR_NOBACKBUFFER;
+			return FWERR_NOBACKBUFFER;
 		}
 
 		m_pddsBackBufferLeft->AddRef();
@@ -444,7 +444,7 @@ HRESULT CD3DFramework7::CreateWindowedBuffers()
 		DEBUG_MSG(_T("Error: Unable to create primary surface"));
 
 		if (hr != DDERR_OUTOFVIDEOMEMORY)
-			return D3DFWERR_NOPRIMARY;
+			return FWERR_NOPRIMARY;
 
 		DEBUG_MSG(_T("Error: Out of video memory"));
 		return DDERR_OUTOFVIDEOMEMORY;
@@ -456,7 +456,7 @@ HRESULT CD3DFramework7::CreateWindowedBuffers()
 	if (FAILED(hr = m_pDD->CreateClipper(0, &pcClipper, NULL)))
 	{
 		DEBUG_MSG(_T("Error: Unable to create clipper"));
-		return D3DFWERR_NOCLIPPER;
+		return FWERR_NOCLIPPER;
 	}
 
 	// Associate the clipper with the window
@@ -477,7 +477,7 @@ HRESULT CD3DFramework7::CreateWindowedBuffers()
 		DEBUG_ERR(hr, _T("Error: Unable to create the backbuffer"));
 
 		if (hr != DDERR_OUTOFVIDEOMEMORY)
-			return D3DFWERR_NOBACKBUFFER;
+			return FWERR_NOBACKBUFFER;
 
 		DEBUG_MSG(_T("Error: Out of video memory"));
 		return DDERR_OUTOFVIDEOMEMORY;
@@ -503,7 +503,7 @@ HRESULT CD3DFramework7::CreateDirect3D(GUID * pDeviceGUID)
 	if (FAILED(m_pDD->QueryInterface(IID_IDirect3D7, (VOID **)&m_pD3D)))
 	{
 		DEBUG_MSG(_T("Unable to Access Direct3D interface"));
-		return D3DFWERR_NODIRECT3D;
+		return FWERR_NODIRECT3D;
 	}
 
 	// Create the device
@@ -511,7 +511,7 @@ HRESULT CD3DFramework7::CreateDirect3D(GUID * pDeviceGUID)
 	                                &m_pd3dDevice)))
 	{
 		DEBUG_MSG(_T("Unable to create D3DDevice"));
-		return D3DFWERR_NO3DDEVICE;
+		return FWERR_NO3DDEVICE;
 	}
 
 	// Finally, set the viewport for the newly created device
@@ -520,7 +520,7 @@ HRESULT CD3DFramework7::CreateDirect3D(GUID * pDeviceGUID)
 	if (FAILED(m_pd3dDevice->SetViewport(&vp)))
 	{
 		DEBUG_MSG(_T("Unable to set current viewport to device"));
-		return D3DFWERR_NOVIEWPORT;
+		return FWERR_NOVIEWPORT;
 	}
 
 	return S_OK;
@@ -616,7 +616,7 @@ HRESULT CD3DFramework7::CreateZBuffer(GUID * pDeviceGUID)
 
 	free((void *)zbiZBufferInfo.pddpfPixelFormat);
 	DEBUG_MSG(_T("Error: SetRenderTarget() failed after attaching zbuffer!"));
-	return D3DFWERR_NOZBUFFER;
+	return FWERR_NOZBUFFER;
 }
 
 //-----------------------------------------------------------------------------
@@ -755,7 +755,7 @@ HRESULT CD3DFramework7::ShowFrame()
 	RECT rc, screct;
 
 	if (NULL == m_pddsFrontBuffer)
-		return D3DFWERR_NOTINITIALIZED;
+		return FWERR_NOTINITIALIZED;
 
 	RenderError();
 

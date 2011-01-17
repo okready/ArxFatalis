@@ -42,21 +42,20 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 //            @@@ @@@                           @@             @@        STUDIOS    //
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
-// EERIED3DApp
+// EERIESdlApp
 //////////////////////////////////////////////////////////////////////////////////////
 //
 // Description:
 //
 // Updates: (date) (person) (update)
 //
-// Code:	Cyril Meynier
-//			Sébastien Scieux	(Zbuffer)
-//			Didier Pedreno		(ScreenSaver Problem Fix)
-//			Ted Cipicchio		(SDL/OpenGL support)
+// Code:	Ted Cipicchio
 //
 // Copyright (c) 1999 ARKANE Studios SA. All rights reserved
 //////////////////////////////////////////////////////////////////////////////////////
-#if !USE_SDL
+#if USE_SDL
+
+#include "SDL.h"
 
 #include <stdio.h>
 #include <tchar.h>
@@ -77,9 +76,6 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
 #include "..\danae\danae_resource.h"
 
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-
 //-----------------------------------------------------------------------------
 extern long USE_OLD_MOUSE_SYSTEM;
 extern long FINAL_RELEASE;
@@ -94,9 +90,6 @@ long _EERIEMouseXdep, _EERIEMouseYdep = 0;
 long LastEERIEMouseButton = 0;
 long MouseDragX, MouseDragY;
 
-LPDIRECT3DDEVICE7	GDevice;
-HWND				MSGhwnd = NULL;
-
 static RECT srRect;
 static int iCurrZBias;
 
@@ -108,40 +101,23 @@ enum APPMSGTYPE { MSG_NONE, MSGERR_APPMUSTEXIT, MSGWARN_SWITCHEDTOSOFTWARE };
 static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 //*************************************************************************************
-// CD3DApplication()
+// CSdlApplication()
 // Constructor
 //*************************************************************************************
-CD3DApplication::CD3DApplication()
+CSdlApplication::CSdlApplication()
 {
 	long i;
 	d_dlgframe = 0;
 	b_dlg = FALSE;
-	m_pFramework   = NULL;
-	m_hWnd         = NULL;
-	m_dlghWnd		= NULL;
-	m_pDD          = NULL;
-	m_pD3D         = NULL;
-	m_pd3dDevice   = NULL;
-
-	m_pddsRenderTarget     = NULL;
-	m_pddsRenderTargetLeft = NULL;
 
 	m_bActive         = FALSE;
 	m_bReady          = FALSE;
 	m_bFrameMoving    = TRUE;
-	m_bSingleStep     = FALSE;
 
-	m_strWindowTitle  = _T("EERIE Application");
-	m_bAppUseZBuffer  = FALSE;
-	m_bAppUseStereo   = FALSE;
-	m_bShowStats      = FALSE;
-	m_fnConfirmDevice = NULL;
 	CreationSizeX = 640;
 	CreationSizeY = 480;
 	CreationFlags = 0;
-	owner = 0L;
 	CreationMenu = NULL;
-	ToolBar = NULL;
 	strcpy(StatusText, "");
 	memset(&Project, 0, sizeof(PROJECT));
 	Project.TextureSize = 0;
@@ -166,26 +142,9 @@ extern long FINAL_COMMERCIAL_GAME;
 //*************************************************************************************
 // Create()
 //*************************************************************************************
-HRESULT CD3DApplication::Create(HINSTANCE hInst)
+HRESULT CSdlApplication::Create(HINSTANCE /*hInst*/)
 {
 	HRESULT hr;
-	long menu;
-	DWORD flags;
-
-	// Enumerate available D3D devices. The callback is used so the app can
-	// confirm/reject each enumerated device depending on its capabilities.
-	if (FAILED(hr = D3DEnum_EnumerateDevices(m_fnConfirmDevice)))
-	{
-		DisplayFrameworkError(hr, MSGERR_APPMUSTEXIT);
-		return hr;
-	}
-
-	// Select a device. Ask for a hardware device that renders in a window.
-	if (FAILED(hr = D3DEnum_SelectDefaultDevice(&m_pDeviceInfo)))
-	{
-		DisplayFrameworkError(hr, MSGERR_APPMUSTEXIT);
-		return hr;
-	}
 
 	// Initialize the app's custom scene stuff
 	if (FAILED(hr = OneTimeSceneInit()))
@@ -194,9 +153,9 @@ HRESULT CD3DApplication::Create(HINSTANCE hInst)
 		return hr;
 	}
 
-	// Create a new CD3DFramework class. This class does all of our D3D
-	// initialization and manages the common D3D objects.
-	if (NULL == (m_pFramework = new CD3DFramework7()))
+	// Create a new CSdlFramework class. This class does all of our OpenGL
+	// initialization and manages the common OpenGL objects.
+	if (NULL == (m_pFramework = new CSdlFramework()))
 	{
 		DisplayFrameworkError(E_OUTOFMEMORY, MSGERR_APPMUSTEXIT);
 		return E_OUTOFMEMORY;
@@ -317,7 +276,7 @@ HRESULT CD3DApplication::Create(HINSTANCE hInst)
 
 //*************************************************************************************
 //*************************************************************************************
-HWND CD3DApplication::CreateToolBar(HWND hWndParent, long tbb, HINSTANCE hInst)
+HWND CSdlApplication::CreateToolBar(HWND hWndParent, long tbb, HINSTANCE hInst)
 {
 	HWND hWndToolbar;
 	long flags;
@@ -347,7 +306,7 @@ HWND CD3DApplication::CreateToolBar(HWND hWndParent, long tbb, HINSTANCE hInst)
 // Run()
 // Message-processing loop. Idle time is used to render the scene.
 //*************************************************************************************
-INT CD3DApplication::Run()
+INT CSdlApplication::Run()
 {
 	BeforeRun();
 	
@@ -392,7 +351,7 @@ INT CD3DApplication::Run()
 
 }
 
-void CD3DApplication::EvictManagedTextures()
+void CSdlApplication::EvictManagedTextures()
 {
 	if (this->m_pD3D)
 	{
@@ -400,7 +359,7 @@ void CD3DApplication::EvictManagedTextures()
 	}
 }
 
-int CD3DApplication::WinManageMess()
+int CSdlApplication::WinManageMess()
 {
 	BOOL bGotMsg = true;
 	MSG  msg;
@@ -440,7 +399,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 //*************************************************************************************
 // Callback for WM_MOUSEMOUVE
 //*************************************************************************************
-void CD3DApplication::EERIEMouseUpdate(short x, short y)
+void CSdlApplication::EERIEMouseUpdate(short x, short y)
 {
 	if ((m_pFramework) &&
 	        (m_pFramework->m_bIsFullscreen) &&
@@ -485,7 +444,7 @@ void CD3DApplication::EERIEMouseUpdate(short x, short y)
 
 //*************************************************************************************
 //*************************************************************************************
-LRESULT CD3DApplication::SwitchFullScreen()
+LRESULT CSdlApplication::SwitchFullScreen()
 {
 
 	m_bReady = FALSE;
@@ -512,7 +471,7 @@ LRESULT CD3DApplication::SwitchFullScreen()
 // MsgProc()
 // Message handling function.
 //*************************************************************************************
-LRESULT CD3DApplication::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam,
+LRESULT CSdlApplication::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam,
                                  LPARAM lParam)
 {
 	HRESULT hr;
@@ -787,7 +746,7 @@ LRESULT CD3DApplication::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 // to initialize device specific objects. This code is structured to
 // handled any errors that may occur during initialization
 //*************************************************************************************
-HRESULT CD3DApplication::Initialize3DEnvironment()
+HRESULT CSdlApplication::Initialize3DEnvironment()
 {
 	HRESULT hr;
 	DWORD   dwFrameworkFlags = 0L;
@@ -865,7 +824,7 @@ HRESULT CD3DApplication::Initialize3DEnvironment()
 // Change3DEnvironment()
 // Handles driver, device, and/or mode changes for the app.
 //*************************************************************************************
-HRESULT CD3DApplication::Change3DEnvironment()
+HRESULT CSdlApplication::Change3DEnvironment()
 {
 	HRESULT hr;
 	static BOOL  bOldWindowedState = TRUE;
@@ -942,7 +901,7 @@ HRESULT CD3DApplication::Change3DEnvironment()
 }
 
 
-HRESULT CD3DApplication::UpdateGamma()
+HRESULT CSdlApplication::UpdateGamma()
 {
 	if (lpDDGammaControl)
 	{
@@ -957,7 +916,7 @@ HRESULT CD3DApplication::UpdateGamma()
 // Render3DEnvironment()
 // Draws the scene.
 //*************************************************************************************
-HRESULT CD3DApplication::Render3DEnvironment()
+HRESULT CSdlApplication::Render3DEnvironment()
 {
 	HRESULT hr;
 	EERIEMouseXdep = _EERIEMouseXdep;
@@ -1025,7 +984,7 @@ HRESULT CD3DApplication::Render3DEnvironment()
 // Cleanup3DEnvironment()
 // Cleanup scene objects
 //*************************************************************************************
-VOID CD3DApplication::Cleanup3DEnvironment()
+VOID CSdlApplication::Cleanup3DEnvironment()
 {
 	m_bActive = FALSE;
 	m_bReady  = FALSE;
@@ -1054,7 +1013,7 @@ VOID CD3DApplication::Cleanup3DEnvironment()
 // brings the GDI surface to the front of the display, so drawing
 // output like message boxes and menus may be displayed.
 //*************************************************************************************
-VOID CD3DApplication::Pause(BOOL bPause)
+VOID CSdlApplication::Pause(BOOL bPause)
 {
 	static DWORD dwAppPausedCount = 0L;
 
@@ -1088,7 +1047,7 @@ VOID CD3DApplication::Pause(BOOL bPause)
 // save any data for open network connections, files, etc.., and prepare
 // to go into a suspended mode.
 //*************************************************************************************
-LRESULT CD3DApplication::OnQuerySuspend(DWORD dwFlags)
+LRESULT CSdlApplication::OnQuerySuspend(DWORD dwFlags)
 {
 	Pause(TRUE);
 	return TRUE;
@@ -1101,7 +1060,7 @@ LRESULT CD3DApplication::OnQuerySuspend(DWORD dwFlags)
 // the app should recover any data, network connections, files, etc..,
 // and resume running from when the app was suspended.
 //*************************************************************************************
-LRESULT CD3DApplication::OnResumeSuspend(DWORD dwData)
+LRESULT CSdlApplication::OnResumeSuspend(DWORD dwData)
 {
 	Pause(FALSE);
 	return TRUE;
@@ -1146,7 +1105,7 @@ VOID CalcFPS(BOOL reset)
 // Shows frame rate and dimensions of the rendering device.
 //*************************************************************************************
 
-HRESULT CD3DApplication::SetClipping(float x1, float y1, float x2, float y2)
+HRESULT CSdlApplication::SetClipping(float x1, float y1, float x2, float y2)
 {
 	D3DVIEWPORT7 vp = {(unsigned long)x1, (unsigned long)y1, (unsigned long)x2, (unsigned long)y2, 0.f, 1.f};
 
@@ -1159,7 +1118,7 @@ HRESULT CD3DApplication::SetClipping(float x1, float y1, float x2, float y2)
 // OutputText()
 // Draws text on the window.
 //*************************************************************************************
-VOID CD3DApplication::OutputText(DWORD x, DWORD y, TCHAR * str)
+VOID CSdlApplication::OutputText(DWORD x, DWORD y, TCHAR * str)
 {
 	HDC hDC;
 
@@ -1193,7 +1152,7 @@ VOID CD3DApplication::OutputText(DWORD x, DWORD y, TCHAR * str)
 // DisplayFrameworkError()
 // Displays error messages in a message box
 //*************************************************************************************
-VOID CD3DApplication::DisplayFrameworkError(HRESULT hr, DWORD dwType)
+VOID CSdlApplication::DisplayFrameworkError(HRESULT hr, DWORD dwType)
 {
 	TCHAR strMsg[512];
 
@@ -1295,7 +1254,7 @@ VOID CD3DApplication::DisplayFrameworkError(HRESULT hr, DWORD dwType)
 	}
 }
  
-float CD3DApplication::GetZBufferMax()
+float CSdlApplication::GetZBufferMax()
 {
 	Lock();
 	Unlock();
@@ -1307,7 +1266,7 @@ float CD3DApplication::GetZBufferMax()
 }
 //*************************************************************************************
 //*************************************************************************************
-void * CD3DApplication::Lock()
+void * CSdlApplication::Lock()
 {
 
 	memset((void *)&ddsd, 0, sizeof(ddsd));	
@@ -1351,7 +1310,7 @@ void * CD3DApplication::Lock()
 
 //*************************************************************************************
 //*************************************************************************************
-bool CD3DApplication::Unlock()
+bool CSdlApplication::Unlock()
 {
 	if (zbuf)
 	{
@@ -1363,7 +1322,7 @@ bool CD3DApplication::Unlock()
 }
 
 //-----------------------------------------------------------------------------
-void CD3DApplication::EnableZBuffer()
+void CSdlApplication::EnableZBuffer()
 {
 	if (m_pd3dDevice)
 	{
@@ -1485,4 +1444,4 @@ void SetZBias(const LPDIRECT3DDEVICE7 _pd3dDevice, int _iZBias)
 	_pd3dDevice->SetRenderState(D3DRENDERSTATE_ZBIAS, iCurrZBias);
 }
 
-#endif  // !USE_SDL
+#endif  // USE_SDL

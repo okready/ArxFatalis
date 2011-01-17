@@ -472,7 +472,7 @@ static VOID UpdateDialogControls(HWND hDlg, D3DEnum_DeviceInfo * pCurrentDevice,
 
 
 
-#define D3DFW_FULLSCREEN    0x00000001 // Use fullscreen mode
+#define FW_FULLSCREEN    0x00000001 // Use fullscreen mode
 //************************************************************************************
 // ChangeDeviceProc()
 // Windows message handling function for the device select dialog

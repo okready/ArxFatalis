@@ -261,4 +261,4 @@ typedef CD3DApplication CApplication;
 
 extern CApplication * g_pApp;
 
-#endif // D3DAPP_H
+#endif // EERIEAPP_H
