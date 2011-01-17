@@ -1,11 +1,10 @@
-newoption
-{
-	trigger = "with-sdl",
-	description = "Force the use of SDL/OpenGL on Windows (all other platforms use it by default)."
-}
-
 solution "ArxFatalis"
-	configurations { "Debug", "Release" }
+	if os.get() == "windows" then
+		configurations { "DebugD3D", "ReleaseD3D", "DebugSDL", "ReleaseSDL" }
+	else
+		configurations { "Debug", "Release" }
+	end
+
 	location "build"
 
 	includedirs
@@ -20,14 +19,14 @@ solution "ArxFatalis"
 		"lib",
 	}
 
-	configuration "with-sdl or not windows"
+	configuration "not windows or *SDL"
 		defines { "USE_SDL=1" }
 
-	configuration { "with-sdl", "not windows" }
+	configuration "not windows"
 		buildoptions { "`sdl-config --cflags`" }
 		linkoptions { "`sdl-config --libs`" }
 
-	configuration { "with-sdl", "windows" }
+	configuration { "windows", "*SDL" }
 		includedirs
 		{
 			-- SDL headers are stored in a separate folder to keep
@@ -36,15 +35,15 @@ solution "ArxFatalis"
 			"Include/OtherLibs/SDL",
 		}
 
-	configuration "Debug"
+	configuration "Debug*"
 		flags { "Symbols" }
 		defines { "_DEBUG" }
 
-	configuration "Release"
+	configuration "Release*"
 		flags { "OptimizeSpeed" }
 		defines { "NDEBUG" }
 
-	configuration { "windows" }
+	configuration "windows"
 		flags { "WinMain" }
 		defines { "WIN32", "_WINDOWS", "_CRT_SECURE_NO_WARNINGS" }
 		includedirs
@@ -202,7 +201,7 @@ solution "ArxFatalis"
 
 		-- SDL library link settings are already specified using
 		-- sdl-config on non-Windows platforms.
-		configuration { "with-sdl", "windows" }
+		configuration { "windows", "*SDL" }
 			links
 			{
 				"SDL",
