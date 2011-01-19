@@ -427,54 +427,29 @@ void * PAK_FileLoadMallocZero(char * name, long * SizeLoadMalloc)
 	return ret;
 }
 
-long PAK_ftell(FILE * stream);
+long PAK_ftell(ANY_FILE stream);
 
-long _PAK_ftell(FILE * stream)
+long _PAK_ftell(PACK_FILE * stream)
 {
-	return pPakManager->fTell((PACK_FILE *)stream);
+	return pPakManager->fTell(stream);
 }
-long PAK_ftell(FILE * stream)
+long PAK_ftell(ANY_FILE stream)
 {
 #ifdef TEST_PACK_EDITOR
 	CURRENT_LOADMODE = LOAD_PACK_THEN_TRUEFILE;
 #endif
 
-	long ret = 0;
+	if (stream.pFile)
+		return ftell(stream.pFile);
 
-	switch (CURRENT_LOADMODE)
-	{
-		case LOAD_TRUEFILE:
-			ret = ftell(stream);
-			break;
-		case LOAD_PACK:
-			ret = _PAK_ftell(stream);
-			break;
-		case LOAD_PACK_THEN_TRUEFILE:
-			ret = _PAK_ftell(stream);
+	if (stream.pPackFile)
+		return _PAK_ftell(stream.pPackFile);
 
-			if (ret < 0)
-				ret = ftell(stream);
-
-			break;
-		case LOAD_TRUEFILE_THEN_PACK:
-
-			if (ferror(stream) && (!bForceInPack))
-			{
-				ret = ftell(stream);
-			}
-			else
-			{
-				ret = _PAK_ftell(stream);
-			}
-
-			break;
-	}
-
-	return ret;
+	return -1;
 }
 
 
-FILE * _PAK_fopen(const char * filename, const char * mode)
+PACK_FILE * _PAK_fopen(const char * filename, const char * mode)
 {
 #ifdef TEST_PACK_EDITOR
 	strcpy(PAK_WORKDIR, "\\\\arkaneserver\\public\\arx\\");
@@ -486,44 +461,44 @@ FILE * _PAK_fopen(const char * filename, const char * mode)
 		return NULL;
 	}
 
-	return (FILE *)pPakManager->fOpen((char *)(filename + g_pak_workdir_len));
+	return pPakManager->fOpen((char *)(filename + g_pak_workdir_len));
 }
 
-FILE * PAK_fopen(const char * filename, const char * mode)
+ANY_FILE PAK_fopen(const char * filename, const char * mode)
 {
 #ifdef TEST_PACK_EDITOR
 	CURRENT_LOADMODE = LOAD_PACK_THEN_TRUEFILE;
 #endif
 
-	FILE * ret = NULL;
+	ANY_FILE ret;
 
 	switch (CURRENT_LOADMODE)
 	{
 		case LOAD_TRUEFILE:
-			ret = fopen(filename, mode);
+			ret.pFile = fopen(filename, mode);
 			break;
 		case LOAD_PACK:
-			ret = _PAK_fopen(filename, mode);
+			ret.pPackFile = _PAK_fopen(filename, mode);
 			break;
 		case LOAD_PACK_THEN_TRUEFILE:
-			ret = _PAK_fopen(filename, mode);
+			ret.pPackFile = _PAK_fopen(filename, mode);
 
-			if (ret == NULL)
-				ret = fopen(filename, mode);
+			if (ret.pPackFile == NULL)
+				ret.pFile = fopen(filename, mode);
 
 			break;
 		case LOAD_TRUEFILE_THEN_PACK:
 
 			if (bForceInPack)
 			{
-				ret = _PAK_fopen(filename, mode);
+				ret.pPackFile = _PAK_fopen(filename, mode);
 			}
 			else
 			{
-				ret = fopen(filename, mode);
+				ret.pFile = fopen(filename, mode);
 
-				if (ret == NULL)
-					ret = _PAK_fopen(filename, mode);
+				if (ret.pFile == NULL)
+					ret.pPackFile = _PAK_fopen(filename, mode);
 			}
 
 			break;
@@ -532,140 +507,65 @@ FILE * PAK_fopen(const char * filename, const char * mode)
 	return ret;
 }
 
-int _PAK_fclose(FILE * stream)
+int _PAK_fclose(PACK_FILE * stream)
 {
-	return pPakManager->fClose((PACK_FILE *)stream);
+	return pPakManager->fClose(stream);
 }
 
-int PAK_fclose(FILE * stream)
+int PAK_fclose(ANY_FILE stream)
 {
 #ifdef TEST_PACK_EDITOR
 	CURRENT_LOADMODE = LOAD_PACK_THEN_TRUEFILE;
 #endif
 
-	int ret = 0;
+	if (stream.pFile)
+		return fclose(stream.pFile);
 
-	switch (CURRENT_LOADMODE)
-	{
-		case LOAD_TRUEFILE:
-			ret = fclose(stream);
-			break;
-		case LOAD_PACK:
-			ret = _PAK_fclose(stream);
-			break;
-		case LOAD_PACK_THEN_TRUEFILE:
-			ret = _PAK_fclose(stream);
+	if (stream.pPackFile)
+		return _PAK_fclose(stream.pPackFile);
 
-			if (ret == EOF)
-				ret = fclose(stream);
-
-			break;
-		case LOAD_TRUEFILE_THEN_PACK:
-
-			if (ferror(stream) && (!bForceInPack))
-			{
-				ret = fclose(stream);
-			}
-			else
-			{
-				ret = _PAK_fclose(stream);
-			}
-
-			break;
-	}
-
-	return ret;
+	return EOF;
 }
 
-size_t _PAK_fread(void * buffer, size_t size, size_t count, FILE * stream)
+size_t _PAK_fread(void * buffer, size_t size, size_t count, PACK_FILE * stream)
 {
-	return pPakManager->fRead(buffer, size, count, (PACK_FILE *)stream);
+	return pPakManager->fRead(buffer, size, count, stream);
 }
 
-size_t PAK_fread(void * buffer, size_t size, size_t count, FILE * stream)
+size_t PAK_fread(void * buffer, size_t size, size_t count, ANY_FILE stream)
 {
 #ifdef TEST_PACK_EDITOR
 	CURRENT_LOADMODE = LOAD_PACK_THEN_TRUEFILE;
 #endif
 
-	size_t ret = 0;
+	if (stream.pFile)
+		return fread(buffer, size, count, stream.pFile);
 
-	switch (CURRENT_LOADMODE)
-	{
-		case LOAD_TRUEFILE:
-			ret = fread(buffer, size, count, stream);
-			break;
-		case LOAD_PACK:
-			ret = _PAK_fread(buffer, size, count, stream);
-			break;
-		case LOAD_PACK_THEN_TRUEFILE:
-			ret = _PAK_fread(buffer, size, count, stream);
+	if (stream.pPackFile)
+		return _PAK_fread(buffer, size, count, stream.pPackFile);
 
-			if (ret == NULL)
-				ret = fread(buffer, size, count, stream);
-
-			break;
-		case LOAD_TRUEFILE_THEN_PACK:
-
-			if (ferror(stream) && (!bForceInPack))
-			{
-				ret = fread(buffer, size, count, stream);
-			}
-			else
-			{
-				ret = _PAK_fread(buffer, size, count, stream);
-			}
-
-			break;
-	}
-
-	return ret;
+	return 0;
 }
 
 
-int _PAK_fseek(FILE * fic, long offset, int origin)
+int _PAK_fseek(PACK_FILE * fic, long offset, int origin)
 {
-	return pPakManager->fSeek((PACK_FILE *)fic, offset, origin);
+	return pPakManager->fSeek(fic, offset, origin);
 }
 
-int PAK_fseek(FILE * fic, long offset, int origin)
+int PAK_fseek(ANY_FILE fic, long offset, int origin)
 {
 #ifdef TEST_PACK_EDITOR
 	CURRENT_LOADMODE = LOAD_PACK_THEN_TRUEFILE;
 #endif
 
-	int ret = 1;
+	if (fic.pFile)
+		return fseek(fic.pFile, offset, origin);
 
-	switch (CURRENT_LOADMODE)
-	{
-		case LOAD_TRUEFILE:
-			ret = fseek(fic, offset, origin);
-			break;
-		case LOAD_PACK:
-			ret = _PAK_fseek(fic, offset, origin);
-			break;
-		case LOAD_PACK_THEN_TRUEFILE:
-			ret = _PAK_fseek(fic, offset, origin);
+	if (fic.pPackFile)
+		return _PAK_fseek(fic.pPackFile, offset, origin);
 
-			if (ret == 1)
-				ret = fseek(fic, offset, origin);
-
-			break;
-		case LOAD_TRUEFILE_THEN_PACK:
-
-			if (ferror(fic) && (!bForceInPack))
-			{
-				ret = fseek(fic, offset, origin);
-			}
-			else
-			{
-				ret = _PAK_fseek(fic, offset, origin);
-			}
-
-			break;
-	}
-
-	return ret;
+	return 1;
 }
 
 //-----------------------------------------------------------------------------

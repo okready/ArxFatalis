@@ -55,6 +55,58 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 //#define FINAL_COMMERCIAL_DEMO
 
 //-----------------------------------------------------------------------------
+ANY_FILE::ANY_FILE()
+	: pFile(NULL)
+	, pPackFile(NULL)
+{
+}
+
+//-----------------------------------------------------------------------------
+//ANY_FILE::ANY_FILE(FILE* _pFile)
+//	: pFile(_pFile)
+//	, pPackFile(NULL)
+//{
+//}
+//
+////-----------------------------------------------------------------------------
+//ANY_FILE::ANY_FILE(PACK_FILE* _pPackFile)
+//	: pFile(NULL)
+//	, pPackFile(_pPackFile)
+//{
+//}
+
+//-----------------------------------------------------------------------------
+void ANY_FILE::Clear()
+{
+	pFile = NULL;
+	pPackFile = NULL;
+}
+
+//-----------------------------------------------------------------------------
+ANY_FILE::operator bool() const
+{
+	return (pFile && pPackFile);
+}
+
+////-----------------------------------------------------------------------------
+//ANY_FILE& ANY_FILE::operator=(FILE* _pFile)
+//{
+//	pFile = _pFile;
+//	pPackFile = NULL;
+//
+//	return *this;
+//}
+//
+////-----------------------------------------------------------------------------
+//ANY_FILE& ANY_FILE::operator=(PACK_FILE* _pPackFile)
+//{
+//	pFile = NULL;
+//	pPackFile = _pPackFile;
+//
+//	return *this;
+//}
+
+//-----------------------------------------------------------------------------
 EVE_LOADPACK::EVE_LOADPACK()
 {
 	lpszName = NULL;

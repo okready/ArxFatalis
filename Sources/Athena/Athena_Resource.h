@@ -25,7 +25,7 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #ifndef __ATHENA_RESOURCE_H__
 #define __ATHENA_RESOURCE_H__
 
-#include <stdio.h>
+#include <HERMES_pack_public.h>
 #include <Athena_Types.h>
 #include <windows.h>
 #include <dsound.h>
@@ -36,7 +36,7 @@ namespace ATHENA
 
 	const aalULong ALIGNMENT(0x10);
 
-	FILE * OpenResource(const char * name, const char * resource_path);
+	ANY_FILE OpenResource(const char * name, const char * resource_path);
 
 
 	///////////////////////////////////////////////////////////////////////////////

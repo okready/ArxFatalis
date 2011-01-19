@@ -31,15 +31,48 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
 extern long CURRENT_LOADMODE;
 
+static ANY_FILE _fopen_wrapper(const char * name, const char * mode)
+{
+	ANY_FILE file;
+	file.pFile = fopen(name, mode);
+
+	return file;
+}
+
+static int _fclose_wrapper(ANY_FILE file)
+{
+	return fclose(file.pFile);
+}
+
+static size_t _fread_wrapper(void * buffer, size_t size, size_t count, ANY_FILE file)
+{
+	return fread(buffer, size, count, file.pFile);
+}
+
+static size_t _fwrite_wrapper(const void * buffer, size_t size, size_t count, ANY_FILE file)
+{
+	return fwrite(buffer, size, count, file.pFile);
+}
+
+static int _fseek_wrapper(ANY_FILE file, long offset, int origin)
+{
+	return fseek(file.pFile, offset, origin);
+}
+
+static long _ftell_wrapper(ANY_FILE file)
+{
+	return ftell(file.pFile);
+}
+
 namespace ATHENA
 {
 
-	FILE *(* FileOpen)(const char * name, const char * mode) = fopen;
-	int (* FileClose)(FILE * file) = fclose;
-	size_t (* FileRead)(void * buffer, size_t size, size_t count, FILE * file) = fread;
-	size_t (* FileWrite)(const void * buffer, size_t size, size_t count, FILE * file) = fwrite;
-	int (* FileSeek)(FILE * file, long offset, int origin) = fseek;
-	long(* FileTell)(FILE * file) = ftell;
+	ANY_FILE (* FileOpen)(const char * name, const char * mode) = _fopen_wrapper;
+	int (* FileClose)(ANY_FILE file) = _fclose_wrapper;
+	size_t (* FileRead)(void * buffer, size_t size, size_t count, ANY_FILE file) = _fread_wrapper;
+	size_t (* FileWrite)(const void * buffer, size_t size, size_t count, ANY_FILE file) = _fwrite_wrapper;
+	int (* FileSeek)(ANY_FILE file, long offset, int origin) = _fseek_wrapper;
+	long(* FileTell)(ANY_FILE file) = _ftell_wrapper;
 
 	aalVoid FileIOInit()
 	{
@@ -50,7 +83,7 @@ namespace ATHENA
 			FileOpen = PAK_fopen;
 			FileClose = PAK_fclose;
 			FileRead = PAK_fread;
-			FileWrite = ::fwrite;
+			FileWrite = _fwrite_wrapper;
 			FileSeek = PAK_fseek;
 			FileTell = PAK_ftell;
 		}
@@ -58,12 +91,12 @@ namespace ATHENA
 		{
 			CURRENT_LOADMODE = LOAD_TRUEFILE;
 
-			FileOpen =	::fopen;
-			FileClose = ::fclose;
-			FileRead =	::fread;
-			FileWrite = ::fwrite;
-			FileSeek =	::fseek;
-			FileTell =	::ftell;
+			FileOpen =	_fopen_wrapper;
+			FileClose = _fclose_wrapper;
+			FileRead =	_fread_wrapper;
+			FileWrite = _fwrite_wrapper;
+			FileSeek =	_fseek_wrapper;
+			FileTell =	_ftell_wrapper;
 		}
 	}
 

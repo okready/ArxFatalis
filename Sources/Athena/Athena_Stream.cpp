@@ -36,7 +36,7 @@ namespace ATHENA
 
 	Stream * CreateStream(const char * name)
 	{
-		FILE * file;
+		ANY_FILE file;
 		Stream * stream = NULL;
 
 		file = OpenResource(name, sample_path);
@@ -56,7 +56,7 @@ namespace ATHENA
 
 	aalError DeleteStream(Stream *&stream)
 	{
-		FILE * file;
+		ANY_FILE file;
 
 		stream->GetStream(file);
 		FileClose(file);

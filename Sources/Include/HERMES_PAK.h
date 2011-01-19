@@ -78,13 +78,13 @@ void * PAK_FileLoadMallocZero(char *name,long * SizeLoadMalloc=NULL);
 
 // use only for READ !!!!
 void PAK_SetLoadMode(long mode,char * pakfile,char * workdir=NULL);
-FILE * PAK_fopen(const char *filename, const char *mode );
-size_t PAK_fread(void *buffer, size_t size, size_t count, FILE *stream );;
-int PAK_fclose(FILE * stream);
-long PAK_ftell(FILE * stream);
+ANY_FILE PAK_fopen(const char *filename, const char *mode );
+size_t PAK_fread(void *buffer, size_t size, size_t count, ANY_FILE stream );;
+int PAK_fclose(ANY_FILE stream);
+long PAK_ftell(ANY_FILE stream);
 long PAK_DirectoryExist(char *name);
 long PAK_FileExist(char *name);
-int PAK_fseek(FILE * fic,long offset,int origin);
+int PAK_fseek(ANY_FILE fic,long offset,int origin);
 
 void PAK_NotFoundInit(char * fic);
 bool PAK_NotFound(char * fic);

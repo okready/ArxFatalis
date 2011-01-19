@@ -72,7 +72,7 @@ namespace ATHENA
 	///////////////////////////////////////////////////////////////////////////////
 	aalError Environment::Load(const char * _name)
 	{
-		FILE * file = OpenResource(_name, environment_path);
+		ANY_FILE file = OpenResource(_name, environment_path);
 
 		if (!file) return AAL_ERROR_FILEIO;
 

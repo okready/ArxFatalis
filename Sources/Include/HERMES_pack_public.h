@@ -58,6 +58,23 @@ typedef struct
 	EVE_TFILE	*pFile;
 } PACK_FILE;
 
+class ANY_FILE
+{
+public:
+	FILE		*pFile;
+	PACK_FILE	*pPackFile;
+
+	ANY_FILE();
+	//ANY_FILE(FILE*);
+	//ANY_FILE(PACK_FILE*);
+
+	void Clear();
+
+	operator bool() const;
+	//ANY_FILE& operator=(FILE*);
+	//ANY_FILE& operator=(PACK_FILE*);
+};
+
 class EVE_LOADPACK
 {
 private:

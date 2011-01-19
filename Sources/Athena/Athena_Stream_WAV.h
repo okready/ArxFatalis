@@ -43,12 +43,12 @@ namespace ATHENA
 			StreamWAV();
 			~StreamWAV();
 			// Setup                                                                     //
-			aalError SetStream(FILE * stream);
+			aalError SetStream(ANY_FILE stream);
 			aalError SetFormat(const aalFormat & format);
 			aalError SetLength(const aalULong & length);
 			aalError SetPosition(const aalULong & position);
 			// Status                                                                    //
-			aalError GetStream(FILE *&stream);
+			aalError GetStream(ANY_FILE & stream);
 			aalError GetFormat(aalFormat & format);
 			aalError GetLength(aalULong & length);
 			aalError GetPosition(aalULong & position);
@@ -57,7 +57,7 @@ namespace ATHENA
 			aalError Write(aalVoid * buffer, const aalULong & to_write, aalULong & write);
 		private:
 			// Data                                                                      //
-			FILE * stream;
+			ANY_FILE stream;
 			Codec * codec;
 			aalVoid * status;                 //Stream status
 			aalVoid * format;                 //File data format

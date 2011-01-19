@@ -49,7 +49,7 @@ namespace ATHENA
 	///////////////////////////////////////////////////////////////////////////////
 	CodecADPCM::CodecADPCM() :
 		header(NULL),
-		stream(NULL),
+		//stream(NULL),
 		padding(0),
 		shift(0),
 		sample_i(0xffffffff),
@@ -159,7 +159,7 @@ namespace ATHENA
 		return AAL_OK;
 	}
 
-	aalError CodecADPCM::SetStream(FILE * _stream)
+	aalError CodecADPCM::SetStream(ANY_FILE _stream)
 	{
 		stream = _stream;
 
@@ -217,7 +217,7 @@ namespace ATHENA
 		return AAL_OK;
 	}
 
-	aalError CodecADPCM::GetStream(FILE *&_stream)
+	aalError CodecADPCM::GetStream(ANY_FILE & _stream)
 	{
 		_stream = stream;
 

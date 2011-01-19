@@ -270,7 +270,7 @@ namespace ATHENA
 			return AAL_ERROR_TIMEOUT;
 
 		char path[256] = "";
-		FILE * file = NULL;
+		ANY_FILE file;
 		aalULong len;
 
 		if (_path) strcat(path, _path);

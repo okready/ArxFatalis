@@ -25,18 +25,18 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #ifndef __ATHENA_FILE_H__
 #define __ATHENA_FILE_H__
 
-#include <stdio.h>
+#include <HERMES_pack_public.h>
 #include <Athena_Types.h>
 
 namespace ATHENA
 {
 
-	extern FILE *(* FileOpen)(const char * name, const char * mode);
-	extern int (* FileClose)(FILE * file);
-	extern size_t (* FileRead)(void * buffer, size_t size, size_t count, FILE * file);
-	extern size_t (* FileWrite)(const void * buffer, size_t size, size_t count, FILE * file);
-	extern int (* FileSeek)(FILE * file, long offset, int origin);
-	extern long(* FileTell)(FILE * file);
+	extern ANY_FILE (* FileOpen)(const char * name, const char * mode);
+	extern int (* FileClose)(ANY_FILE file);
+	extern size_t (* FileRead)(void * buffer, size_t size, size_t count, ANY_FILE file);
+	extern size_t (* FileWrite)(const void * buffer, size_t size, size_t count, ANY_FILE file);
+	extern int (* FileSeek)(ANY_FILE file, long offset, int origin);
+	extern long(* FileTell)(ANY_FILE file);
 
 	aalVoid FileIOInit();
 	aalVoid AddPack(const char * name);

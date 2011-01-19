@@ -97,7 +97,7 @@ namespace ATHENA
 		}
 	}
 
-	static aalError LoadAmbianceFileVersion_1000(FILE * file, Ambiance & amb)
+	static aalError LoadAmbianceFileVersion_1000(ANY_FILE file, Ambiance & amb)
 	{
 		//Read tracks configs
 		for (aalULong i(0); i < amb.track_c; ++i)
@@ -180,7 +180,7 @@ namespace ATHENA
 		return AAL_OK;
 	}
 
-	static aalError LoadAmbianceFileVersion_1001(FILE * file, Ambiance & amb)
+	static aalError LoadAmbianceFileVersion_1001(ANY_FILE file, Ambiance & amb)
 	{
 		for (aalULong i(0); i < amb.track_c; ++i)
 		{
@@ -271,7 +271,7 @@ namespace ATHENA
 		return AAL_OK;
 	}
 
-	static aalError LoadAmbianceFileVersion_1002(FILE * file, Ambiance & amb)
+	static aalError LoadAmbianceFileVersion_1002(ANY_FILE file, Ambiance & amb)
 	{
 		//Read tracks configs
 		for (aalULong i(0); i < amb.track_c; i++)
@@ -383,7 +383,7 @@ namespace ATHENA
 		return AAL_OK;
 	}
 
-	static aalError LoadAmbianceFileVersion_1003(FILE * file, Ambiance & amb)
+	static aalError LoadAmbianceFileVersion_1003(ANY_FILE file, Ambiance & amb)
 	{
 		Track * track = &amb.track_l[amb.track_c];
 
@@ -505,7 +505,7 @@ namespace ATHENA
 	///////////////////////////////////////////////////////////////////////////////
 	aalError Ambiance::Load(const char * _name)
 	{
-		FILE * file = NULL;
+		ANY_FILE file;
 		aalULong sign, version;
 		aalError error;
 		Track * track = NULL;

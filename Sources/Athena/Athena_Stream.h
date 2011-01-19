@@ -43,12 +43,12 @@ namespace ATHENA
 			// Destructor                                                                //
 			virtual ~Stream() {};
 			// Setup                                                                     //
-			virtual aalError SetStream(FILE * stream) = 0;
+			virtual aalError SetStream(ANY_FILE stream) = 0;
 			virtual aalError SetFormat(const aalFormat & format) = 0;
 			virtual aalError SetLength(const aalULong & length) = 0;
 			virtual aalError SetPosition(const aalULong & position) = 0;
 			// Status                                                                    //
-			virtual aalError GetStream(FILE *&stream) = 0;
+			virtual aalError GetStream(ANY_FILE & stream) = 0;
 			virtual aalError GetFormat(aalFormat & format) = 0;
 			virtual aalError GetLength(aalULong & length) = 0;
 			virtual aalError GetPosition(aalULong & position) = 0;

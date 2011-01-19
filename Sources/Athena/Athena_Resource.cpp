@@ -35,9 +35,9 @@ namespace ATHENA
 	extern char * root_path;
 
 
-	FILE * OpenResource(const char * name, const char * resource_path)
+	ANY_FILE OpenResource(const char * name, const char * resource_path)
 	{
-		FILE * file = FileOpen(name, "rb");
+		ANY_FILE file = FileOpen(name, "rb");
 		char text[256];
 
 		if (!file && root_path)

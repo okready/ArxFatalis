@@ -25,7 +25,7 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #ifndef __ATHENA_CODEC_RAW_H__
 #define __ATHENA_CODEC_RAW_H__
 
-#include <stdio.h>
+#include <HERMES_pack_public.h>
 #include <Athena_Types.h>
 #include "Athena_Codec.h"
 
@@ -45,11 +45,11 @@ namespace ATHENA
 			~CodecRAW();
 			// Setup                                                                     //
 			aalError SetHeader(aalVoid * header);
-			aalError SetStream(FILE * stream);
+			aalError SetStream(ANY_FILE stream);
 			aalError SetPosition(const aalULong & position);
 			// Status                                                                    //
 			aalError GetHeader(aalVoid *&header);
-			aalError GetStream(FILE *&stream);
+			aalError GetStream(ANY_FILE & stream);
 			aalError GetPosition(aalULong & position);
 			// File I/O                                                                  //
 			aalError Read(aalVoid * buffer, const aalULong & to_read, aalULong & read);
@@ -57,7 +57,7 @@ namespace ATHENA
 		private:
 			// Data                                                                      //
 			aalVoid * header;
-			FILE * stream;
+			ANY_FILE stream;
 			aalULong cursor;
 	};
 

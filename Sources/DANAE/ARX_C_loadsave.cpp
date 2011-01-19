@@ -35,7 +35,7 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 /*----------------------------------------------------------------------*/
 void DrawInfoTrack(void);
 /*----------------------------------------------------------------------*/
-static FILE * FCurr;
+static ANY_FILE FCurr;
 static char Dir[256];
 static char Name[256];
 /*----------------------------------------------------------------------*/
@@ -98,7 +98,7 @@ BOOL LoadProject(CINEMATIQUE * c, char * dir, char * name)
 	if (strcmp(txt, "KFA"))
 	{
 		PAK_fclose(FCurr);
-		FCurr = NULL;
+		FCurr.Clear();
 		c->New();
 		return FALSE;
 	}
@@ -108,7 +108,7 @@ BOOL LoadProject(CINEMATIQUE * c, char * dir, char * name)
 	if (version > VERSION)
 	{
 		PAK_fclose(FCurr);
-		FCurr = NULL;
+		FCurr.Clear();
 		c->New();
 		return FALSE;
 	}
@@ -451,7 +451,7 @@ BOOL LoadProject(CINEMATIQUE * c, char * dir, char * name)
 	UpDateAllKeyLight();
 
 	PAK_fclose(FCurr);
-	FCurr = NULL;
+	FCurr.Clear();
 
 	ActiveAllTexture(c);
 

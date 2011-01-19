@@ -44,7 +44,7 @@ namespace ATHENA
 	{
 		public:
 			//Constructor and destructor
-			ChunkFile(FILE * file);
+			ChunkFile(ANY_FILE file);
 			~ChunkFile();
 			//I/O
 			aalSBool Read(aalVoid *, const aalULong &);
@@ -58,7 +58,7 @@ namespace ATHENA
 			aalSBool Restart();
 		private:
 			//Data
-			FILE * file;
+			ANY_FILE file;
 			aalULong offset;
 	};
 
@@ -68,7 +68,7 @@ namespace ATHENA
 	//                                                                           //
 	///////////////////////////////////////////////////////////////////////////////
 	StreamWAV::StreamWAV() :
-		stream(NULL),
+		//stream(NULL),
 		codec(NULL),
 		status(NULL),
 		format(NULL),
@@ -91,7 +91,7 @@ namespace ATHENA
 	// Setup                                                                     //
 	//                                                                           //
 	///////////////////////////////////////////////////////////////////////////////
-	aalError StreamWAV::SetStream(FILE * _stream)
+	aalError StreamWAV::SetStream(ANY_FILE _stream)
 	{
 		if (!_stream) return AAL_ERROR_FILEIO;
 
@@ -202,7 +202,7 @@ namespace ATHENA
 	// Status                                                                    //
 	//                                                                           //
 	///////////////////////////////////////////////////////////////////////////////
-	aalError StreamWAV::GetStream(FILE *&_stream)
+	aalError StreamWAV::GetStream(ANY_FILE & _stream)
 	{
 		_stream = stream;
 
@@ -276,7 +276,7 @@ namespace ATHENA
 	//                                                                           //
 	///////////////////////////////////////////////////////////////////////////////
 	// Constructor                                                               //
-	ChunkFile::ChunkFile(FILE * ptr) : file(ptr), offset(0)
+	ChunkFile::ChunkFile(ANY_FILE ptr) : file(ptr), offset(0)
 	{
 	}
 

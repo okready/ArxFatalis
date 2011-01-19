@@ -37,7 +37,7 @@ namespace ATHENA
 	//                                                                           //
 	///////////////////////////////////////////////////////////////////////////////
 	CodecRAW::CodecRAW() :
-		stream(NULL),
+		//stream(NULL),
 		header(NULL),
 		cursor(0)
 	{
@@ -59,7 +59,7 @@ namespace ATHENA
 		return AAL_OK;
 	}
 
-	aalError CodecRAW::SetStream(FILE * _stream)
+	aalError CodecRAW::SetStream(ANY_FILE _stream)
 	{
 		stream = _stream;
 
@@ -87,7 +87,7 @@ namespace ATHENA
 		return AAL_OK;
 	}
 
-	aalError CodecRAW::GetStream(FILE *&_stream)
+	aalError CodecRAW::GetStream(ANY_FILE & _stream)
 	{
 		_stream = stream;
 
