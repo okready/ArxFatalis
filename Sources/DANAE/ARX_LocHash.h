@@ -27,17 +27,16 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #ifndef LOC_HASH_H
 #define LOC_HASH_H
 
+#include <ARX_Common.h>
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
 #include <tchar.h>
 #include <vector>
-#include <ARX_Common.h>
 
 using namespace std;
 
-#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 
 //-----------------------------------------------------------------------------

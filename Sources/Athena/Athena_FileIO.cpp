@@ -26,7 +26,6 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #include "Athena_Global.h"
 #include <Hermes_Pak.h>
 
-#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 
 extern long CURRENT_LOADMODE;

@@ -55,7 +55,6 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #include <ARX_Speech.h>
 #include <ARX_Menu.h>
 
-#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 void MakeSpCol();
 extern long WILLRETURNTOCOMBATMODE;

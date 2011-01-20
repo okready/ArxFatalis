@@ -25,11 +25,11 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #ifndef HACHAGE_H
 #define HACHAGE_H
 
+#include <ARX_Common.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <vector>
-#include <ARX_Common.h>
 
 typedef struct
 {

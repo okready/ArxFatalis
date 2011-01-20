@@ -85,7 +85,6 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #include "EERIECollisionSpheres.h"
 #include "EERIEMeshTweak.h"
 
-#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 
 void CheckNPCEx(INTERACTIVE_OBJ * io);

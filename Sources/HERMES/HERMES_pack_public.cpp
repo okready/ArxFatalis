@@ -48,7 +48,6 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
 #include "HERMES_pack_public.h"
 
-#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 
 #define FINAL_COMMERCIAL_GAME

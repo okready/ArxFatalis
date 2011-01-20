@@ -61,6 +61,7 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 						Include
 ------------------------------------------------------------*/
 
+#define _CRTDBG_MAP_ALLOC  // Must be defined before all C runtime includes on Windows.
 #include <assert.h>
 #include <limits.h>
 #include <stdio.h>

@@ -25,6 +25,7 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #ifndef MERCURY_EXTERN_H
 #define MERCURY_EXTERN_H
 
+#include <ARX_Common.h>
 #include <windows.h>
 #include <string.h>
 #include <stdlib.h>
@@ -32,7 +33,6 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #include <assert.h>
 #include <conio.h>
 #include <direct.h>
-#include <ARX_Common.h>
 
 #define INITGUID
 #define DIRECTINPUT_VERSION 0x0700
@@ -40,7 +40,6 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
 #include "Mercury_dx_input.h"
 
-#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 
 /*---------------------------------------------------------*/

@@ -90,7 +90,6 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
 #include "Danae_resource.h"
 
-#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 
 extern long GLOBAL_MAGIC_MODE;

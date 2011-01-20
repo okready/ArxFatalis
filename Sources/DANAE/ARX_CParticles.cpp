@@ -81,7 +81,6 @@ todo:
 using namespace std;
 
 
-#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 
 //-----------------------------------------------------------------------------

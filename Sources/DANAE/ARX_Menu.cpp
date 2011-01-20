@@ -78,7 +78,6 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #include "EERIEMath.h"
 #include "EERIEObject.h"
 
-#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 //-----------------------------------------------------------------------------
 extern CARXTextManager * pTextManage;

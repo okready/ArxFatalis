@@ -77,7 +77,6 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #include <jconfig.h>
 #include <jmorecfg.h>
 
-#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 
 long GLOBAL_EERIETEXTUREFLAG_LOADSCENE_RELEASE = 0;

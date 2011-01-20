@@ -70,7 +70,6 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #include "EERIEapp.h"
 
 #include <stdio.h>
-#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 
 // Some external defs needing to be cleaned...

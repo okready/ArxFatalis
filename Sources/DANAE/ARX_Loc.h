@@ -27,9 +27,9 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #ifndef ARX_LOC_H
 #define ARX_LOC_H
 
+#include <ARX_Common.h>
 #include <tchar.h>
 #include <objbase.h>
-#include <ARX_Common.h>
 
 void ARX_Localisation_Init(char * _lpszExtension = "english");
 void ARX_Localisation_Close();

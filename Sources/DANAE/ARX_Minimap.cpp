@@ -66,7 +66,6 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #include "danae.h"
 
 #include <stdio.h>
-#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 
 MINI_MAP_DATA minimap[MAX_MINIMAPS];

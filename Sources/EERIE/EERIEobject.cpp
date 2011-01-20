@@ -70,7 +70,6 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #include "Arx_sound.h"
 #include "ARX_Cedric.h"
 
-#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 
 long COMPUTE_PORTALS = 1;

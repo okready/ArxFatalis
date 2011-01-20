@@ -28,7 +28,6 @@ ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 #include "Resource.h"
 
 #include "EERIEUtil.h"
-#define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #define ADJUSTX(a) (((((a)-(LARGEURS>>1))*((float)LargeurRender/(float)LARGEURS))+(LARGEURS>>1)))*(640.f/(float)LargeurRender) //*((float)LARGEURS/(float)LargeurRender)
 #define ADJUSTY(a) (((((a)-(HAUTEURS>>1))*((float)HauteurRender/(float)HAUTEURS))+(HAUTEURS>>1)))*(480.f/(float)HauteurRender)  //*((float)HAUTEURS/(float)HauteurRender)
